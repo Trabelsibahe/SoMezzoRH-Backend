@@ -1,7 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const userRoute = require("./routes/user");
 const app = express();
 const port = 3030;
+
+
+// path
+app.use(express.json());
 
 
 
@@ -15,11 +20,15 @@ app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");
   });
   
+  //register login
+app.use("/api", userRoute);
 
 // hedhi rabta mabin backend o bd
-mongoose.connect("mongodb://localhost:27017/contactdb", {
+mongoose.connect("mongodb://127.0.0.1:27017/somezzo_rh", {
   useNewUrlParser: true,
 });
+
+
 
 // hedhi bech naarf est ce que bd mte3i terbat wela le
 const db = mongoose.connection;
