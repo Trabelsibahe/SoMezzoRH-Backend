@@ -8,7 +8,8 @@ module.exports = function ValidateRegister(data) {
   data.matricule = !isEmpty(data.matricule) ? data.matricule : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.confirm = !isEmpty(data.confirm) ? data.confirm : "";
-
+  
+//test+msg erreur 
   if (validator.isEmpty(data.utilisateur)) {
     errors.utilisateur = "entrez nom et prenom ";
   }

@@ -14,7 +14,7 @@ module.exports = function ValidateLogin(data) {
     errors.email = "Required format email";
   }*/
 
-
+//test+msg erreur 
   if (validator.isEmpty(data.matricule)) {
     errors.matricule = "entrez votre matricule";
   }

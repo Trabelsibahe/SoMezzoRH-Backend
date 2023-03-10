@@ -6,7 +6,7 @@ const User = new Schema(
     utilisateur: "string",
     matricule: {
       type: "string",
-      trim: true,
+      trim: true,//sans espace 
       unique: true,
     },
     password: "string",
