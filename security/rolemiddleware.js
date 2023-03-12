@@ -7,7 +7,7 @@ const ROLES = {
 const inRole  = (...roles)=>(req, res, next)=>{
     const role =  roles.find(role=> req.user.role === role)
     if(!role){
-      return res.status(401).json({message: "Access Denied"})
+      return res.status(401).json({message: "Access Denied."})
     }
      next()
 }

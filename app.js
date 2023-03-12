@@ -1,11 +1,17 @@
+
+
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/user");
 const app = express();
 const port = 3030;
+const cors = require("cors");
 
 
 // path
+app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
 
 

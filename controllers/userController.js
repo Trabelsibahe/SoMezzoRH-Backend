@@ -3,7 +3,7 @@ const ValidateRegister = require("../validators/register");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ValidateLogin = require("../validators/Login");
-const PRIVATE_KEY = "BAHAZABOUR";
+const PRIVATE_KEY = "SoMezzoRH";
 
 
 //register
@@ -40,12 +40,12 @@ const Login = async (req, res) => {
     } else {
       UserModel.findOne({ matricule: req.body.matricule }).then((user) => {
         if (!user) {
-          errors.matricule = "utilisateur non disponible ";
+          errors.matricule = "Ce matricule n'existe pas.";
           res.status(404).json(errors);
         } else {
           bcrypt.compare(req.body.password, user.password).then((isMatch) => {
             if (!isMatch) {
-              errors.password = "motpass est incorrect";
+              errors.password = "Mot de passe incorrect.";
               res.status(404).json(errors);
             } else {
               var token = jwt.sign(
@@ -59,7 +59,7 @@ const Login = async (req, res) => {
                 { expiresIn: "1h" }
               );
               res.status(200).json({
-                message: "bienvenue",
+                message: "Connexion réussite.",
                 token: "Bearer " + token,
               });
             }
