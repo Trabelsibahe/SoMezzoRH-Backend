@@ -19,16 +19,16 @@ module.exports = function ValidateRegister(data) {
   }*/
 
   if (validator.isEmpty(data.matricule)) {
-    errors.matricule = "entrez le matricule";
+    errors.matricule = "Veuillez entrez le matricule";
   }
   if (validator.isEmpty(data.password)) {
-    errors.password = "entrez le mot de passe";
+    errors.password = "Veuillez entrez le mot de passe";
   }
   if(!validator.equals(data.password, data.confirm)){
     errors.confirm = "verifier le mot de pass ";
   }
   if (validator.isEmpty(data.confirm)) {
-    errors.confirm = "entrez la confirmation de mot de passe";
+    errors.confirm = "Veuillez entrez la confirmation de mot de passe";
   }
   
 

@@ -15,14 +15,14 @@ const Register = async (req, res) => {
     } else {
       UserModel.findOne({ matricule: req.body.matricule }).then(async (exist) => {
         if (exist) {
-          errors.matricule = "utilisateur deja exist ";
+          errors.matricule = "utilisateur déja exist ";
           res.status(404).json(errors);
         } else {
           const hash = bcrypt.hashSync(req.body.password, 10); //hashed password
           req.body.password = hash;
           req.body.role = "EMP";
           await UserModel.create(req.body);
-          res.status(200).json({ message: "creation un nouveau utilisateur" });
+          res.status(200).json({ message: "création un nouvel utilisateur" });
         }
       });
     }
@@ -74,13 +74,13 @@ const Login = async (req, res) => {
 
 // /user
 const EMP = (req, res) => {
-  res.send("Welcome EMP");
+  res.send("bienvenue EMP");
 };
 
 
 // /admin
 const EXPERT = (req, res) => {
-  res.send("Welcome EXPERT");
+  res.send("bienvenue EXPERT");
 };
 
 

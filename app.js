@@ -1,25 +1,31 @@
-
-
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoute = require("./routes/user");
 const app = express();
 const port = 3030;
 const cors = require("cors");
+const passport = require("passport");
+const profileRoute = require("./routes/profile");
+
+
 
 
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
 
-
+// passport
+app.use(passport.initialize())
+require('./security/passport')(passport)
 
 // Routes
 app.get("/", (req, res) => {
     res.send("SoMezzoRH Server");
 });
+
+// profile
+app.use("/api", profileRoute);
+
 
 // 1
 app.get("/api", (req, res) => {
