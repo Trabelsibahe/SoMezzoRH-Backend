@@ -56,7 +56,7 @@ const Login = async (req, res) => {
                   role: user.role,
                 },
                 PRIVATE_KEY,
-                { expiresIn: "1h" }
+                { expiresIn: "1d" }
               );
               res.status(200).json({
                 message: "Connexion réussite.",
