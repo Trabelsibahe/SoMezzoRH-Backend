@@ -38,7 +38,11 @@ router.post("/profile/:id",
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 ProfileController.modifierContact);
-
+/* supprimer profile */
+router.delete("/profilesupp/:id", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.EXPERT),
+ProfileController.deleteAndArchiveProfile);
 
 router.get("/serchmatricule", 
 passport.authenticate("jwt", { session: false }),

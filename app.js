@@ -6,7 +6,7 @@ const port = 3030;
 const cors = require("cors");
 const passport = require("passport");
 const profileRoute = require("./routes/profile");
-
+const archiveRoute= require ("./routes/archive")
 
 
 
@@ -25,6 +25,9 @@ app.get("/", (req, res) => {
 
 // profile
 app.use("/api", profileRoute);
+
+// archive
+app.use("/api", archiveRoute);
 
 
 app.get("/api", (req, res) => {
