@@ -27,7 +27,6 @@ app.get("/", (req, res) => {
 app.use("/api", profileRoute);
 
 
-// 1
 app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");
   });
