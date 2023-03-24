@@ -8,6 +8,8 @@ const { ROLES, inRole } = require("../security/Rolemiddleware");
 router.post("/register", userController.Register);
 // login
 router.post("/login", userController.Login);
+//mofdifier motpass
+router.post("/modifmotpass", passport.authenticate("jwt", { session: false }),userController.modifmotpass);
 
 router.get("/user", passport.authenticate('jwt', { session: false }), inRole(ROLES.EMP), userController.EMP);
 

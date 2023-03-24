@@ -71,7 +71,30 @@ const Login = async (req, res) => {
     res.status(404).json(error.message);
   }
 };
+//fonction modifier motpass 
+const modifmotpass = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  try {
+    const user = await UserModel.findById(req.user.id);
 
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé." });
+    }
+
+    const isPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordMatched) {
+      return res.status(400).json({ message: "Ancien mot de passe incorrect." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({ message: "Mot de passe modifié avec succès." });
+  } catch (error) {
+    return res.status(500).json({ message: "Une erreur s'est produite lors de la modification du mot de passe." });
+  }
+};
 // /user
 const EMP = (req, res) => {
   res.send("bienvenue EMP");
@@ -85,6 +108,7 @@ const EXPERT = (req, res) => {
 
 
 module.exports = {
+  modifmotpass,
   Register,
   Login,
   EMP,
