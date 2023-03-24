@@ -20,7 +20,7 @@ const Register = async (req, res) => {
         } else {
           const hash = bcrypt.hashSync(req.body.password, 10); //hashed password
           req.body.password = hash;
-          req.body.role = "EMP";
+          //req.body.role = "EMP";
           await UserModel.create(req.body);
           res.status(200).json({ message: "création un nouvel utilisateur" });
         }

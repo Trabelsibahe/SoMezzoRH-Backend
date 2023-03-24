@@ -6,6 +6,7 @@ module.exports = function ValidateRegister(data) {
  
   data.utilisateur = !isEmpty(data.utilisateur) ? data.utilisateur : "";
   data.matricule = !isEmpty(data.matricule) ? data.matricule : "";
+  data.role = !isEmpty(data.role) ? data.role : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.confirm = !isEmpty(data.confirm) ? data.confirm : "";
   
@@ -20,6 +21,9 @@ module.exports = function ValidateRegister(data) {
 
   if (validator.isEmpty(data.matricule)) {
     errors.matricule = "Veuillez entrez le matricule";
+  }
+  if (validator.isEmpty(data.role)) {
+    errors.matricule = "Veuillez choisir le role";
   }
   if (validator.isEmpty(data.password)) {
     errors.password = "Veuillez entrez le mot de passe";
