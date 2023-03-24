@@ -19,6 +19,10 @@ router.get("/profile/get",
 passport.authenticate("jwt", { session: false }),
 ProfileController.FindSingleProfile);
 
+ /* modif profile connecter */
+router.post("/profile/modif", 
+passport.authenticate("jwt", { session: false }),
+ProfileController.modifierprofile);
 
 //admin
 /* get all profiles */

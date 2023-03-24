@@ -158,8 +158,37 @@ const deleteAndArchiveProfile = async (req, res) => {
       res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
     }
   }
+//fonction modifier profile connecter 
+const modifierprofile = async (req, res) => {
+  const { user, ville, tel, pays, codepostal } = req.body;
 
+  try {
+    const modifiedContact = await ProfileModel.findOne({user: req.user.id}).populate('user');
+    if (!modifiedContact) {
+      return res.status(404).json({ error: "Contact introuvable" });
+    }
+
+    if (user) {
+      modifiedContact.user.utilisateur = user.utilisateur;
+      modifiedContact.user.matricule = user.matricule;
+      modifiedContact.user.role = user.role;
+      await modifiedContact.user.save();
+    }
+
+    modifiedContact.ville = ville || modifiedContact.ville;
+    modifiedContact.tel = tel || modifiedContact.tel;
+    modifiedContact.pays = pays || modifiedContact.pays;
+    modifiedContact.codepostal = codepostal || modifiedContact.codepostal;
+
+    await modifiedContact.save();
+
+    res.status(200).json({ message: "Contact modifié avec succès", data: modifiedContact });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 module.exports = {
+    modifierprofile,
     deleteAndArchiveProfile,
     modifierContact,
     searchByMatricule,
