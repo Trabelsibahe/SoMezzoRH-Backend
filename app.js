@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require("passport");
 const profileRoute = require("./routes/profile");
 const archiveRoute= require ("./routes/archive")
+const newsletterRoute= require ("./routes/newsletter");
 
 
 
@@ -29,7 +30,12 @@ app.use("/api", profileRoute);
 // archive
 app.use("/api", archiveRoute);
 
+// newsletter
+app.use("/api", newsletterRoute);
 
+//static Images Folder
+
+app.use('/uploads', express.static('./uploads'))
 app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");
   });
