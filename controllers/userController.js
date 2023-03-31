@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ValidateLogin = require("../validators/Login");
 const PRIVATE_KEY = "SoMezzoRH";
+const ValidatePasswordChange = require("../validators/PasswordChange");
 
 
 //register
@@ -27,6 +28,35 @@ const Register = async (req, res) => {
       });
     }
   } catch (error) {
+    res.status(404).json(error.message);
+  }
+};
+
+//fonction modifier motpass 
+const modifmotpass = async (req, res) => {
+  const { errors, isValid } = ValidatePasswordChange(req.body);
+
+  try {
+
+    if (!isValid) {
+      res.status(404).json(errors);
+    }
+    else {
+      const user = await UserModel.findById(req.user.id);
+      const isPasswordMatched = await bcrypt.compare(req.body.oldPassword, user.password);
+      if (!isPasswordMatched) {
+        errors.oldPassword = "Ancien mot de passe incorrect."
+        res.status(400).json(errors);
+      }
+      else {
+      const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+      user.password = hashedPassword;
+      await user.save();
+      return res.status(200).json({ message: "Mot de passe modifié avec succès." });
+      }
+    }
+  }
+  catch (error) {
     res.status(404).json(error.message);
   }
 };
@@ -71,30 +101,11 @@ const Login = async (req, res) => {
     res.status(404).json(error.message);
   }
 };
-//fonction modifier motpass 
-const modifmotpass = async (req, res) => {
-  const { oldPassword, newPassword } = req.body;
-  try {
-    const user = await UserModel.findById(req.user.id);
 
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé." });
-    }
 
-    const isPasswordMatched = await bcrypt.compare(oldPassword, user.password);
-    if (!isPasswordMatched) {
-      return res.status(400).json({ message: "Ancien mot de passe incorrect." });
-    }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
 
-    return res.status(200).json({ message: "Mot de passe modifié avec succès." });
-  } catch (error) {
-    return res.status(500).json({ message: "Une erreur s'est produite lors de la modification du mot de passe." });
-  }
-};
+
 // /user
 const EMP = (req, res) => {
   res.send("bienvenue EMP");

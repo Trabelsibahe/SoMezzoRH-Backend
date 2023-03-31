@@ -33,15 +33,16 @@ app.use("/api", archiveRoute);
 // newsletter
 app.use("/api", newsletterRoute);
 
+//register login
+app.use("/api", userRoute);
+
 //static Images Folder
 
 app.use('/uploads', express.static('./uploads'))
 app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");
   });
-  
-  //register login
-app.use("/api", userRoute);
+
 
 // hedhi rabta mabin backend o bd
 mongoose.connect("mongodb://127.0.0.1:27017/somezzo_rh", {

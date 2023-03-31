@@ -158,6 +158,8 @@ const deleteAndArchiveProfile = async (req, res) => {
       res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
     }
   }
+
+  
 //fonction modifier profile connecter 
 const modifierprofile = async (req, res) => {
   const { user, ville, tel, pays, codepostal } = req.body;
