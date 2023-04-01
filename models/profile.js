@@ -14,6 +14,8 @@ const UserProfile = new Schema(
     codepostal: "string",//postalcode
     bio: "string",
     adresse: "string",//address
+    avatar: "string",
+
   },
   {
     timestamps: true,

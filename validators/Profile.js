@@ -1,13 +1,17 @@
 const isEmpty = require("./isEmpty");
 const validator = require("validator");
 
-module.exports = function ValidateProfile(data) {
+module.exports = function ValidateProfile(data,file) {
   let errors = {};
 
   data.tel = !isEmpty(data.tel) ? data.tel : "";
   data.ville  = !isEmpty(data.ville) ? data.ville: "";
   data.pays = !isEmpty(data.pays) ? data.pays : "";
   data.codepostal = !isEmpty(data.codepostal) ? data.codepostal : "";
+     // Valider le fichier dans req.file
+     if (!file || Object.keys(file).length === 0) {
+      errors.avatar = "Veuillez télécharger une image";
+    }
 //test+msg erreur 
 
   if (validator.isEmpty(data.tel)) {

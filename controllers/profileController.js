@@ -2,37 +2,50 @@ const ProfileModel = require('../models/profile')
 const ValidateProfile = require("../validators/Profile")
 const UserModel = require('../models/user')
 const ArchiveModel = require('../models/archives')
+const multer = require('multer')
+const path = require('path')
 
 
 
 // create profile
-const CreateProfile = async (req ,res)=>{
-    const {errors, isValid} = ValidateProfile(req.body)
-    try {
-        if(!isValid){
-          res.status(404).json(errors)
-        }else{
-            ProfileModel.findOne({user: req.user.id})
-        .then(async (profile)=>{
-            if(!profile){
-                req.body.user = req.user.id
-                await ProfileModel.create(req.body)
-                res.status(200).json({message: "Votre profil a été créé avec succès !"})
-            }else{
-               await  ProfileModel.findOneAndUpdate(
-                    {_id: profile._id},
-                    req.body,
-                    {new: true}
-                ).then(result=>{
-                    res.status(200).json(result)
-                })
-            }
-        })
+const CreateProfile = async (req, res) => {
+  const {errors, isValid} = ValidateProfile(req.body, req.file);
+  const newsObj = {
+    tel: req.body.tel,
+    ville: req.body.ville,
+    pays: req.body.pays,
+    codepostal: req.body.codepostal,
+    adresse: req.body.adresse,
+    avatar: req.file.path, // assigner l'emplacement de l'image à la propriété image
+    user: req.user.id
+
+  };
+  try {
+    if (!isValid) {
+      res.status(404).json(errors);
+    } else {
+      ProfileModel.findOne({ user: req.user.id }).then(async (profile) => {
+        if (!profile) {
+          req.body.user = req.user.id;
+          await ProfileModel.create(newsObj);
+          res
+            .status(200)
+            .json({ message: "Votre profil a été créé avec succès !" });
+        } else {
+          await ProfileModel.findOneAndUpdate(
+            { _id: profile._id },
+            newsObj, // mettre à jour la propriété image avec l'emplacement de l'image
+            { new: true }
+          ).then((result) => {
+            res.status(200).json(result);
+          });
         }
-    } catch (error) {
-         res.status(404).json(error.message)
+      });
     }
-}
+  } catch (error) {
+    res.status(404).json(error.message);
+  }
+};
 
 
 //
@@ -181,7 +194,9 @@ const modifierprofile = async (req, res) => {
     modifiedContact.tel = tel || modifiedContact.tel;
     modifiedContact.pays = pays || modifiedContact.pays;
     modifiedContact.codepostal = codepostal || modifiedContact.codepostal;
-
+    if (req.file) {
+      modifiedContact.avatar = req.file.path;
+    }
     await modifiedContact.save();
 
     res.status(200).json({ message: "Contact modifié avec succès", data: modifiedContact });
@@ -189,7 +204,33 @@ const modifierprofile = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+//  Upload Image Controller
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploadsavatar')
+  },
+  filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: '1000000' },
+  fileFilter: (req, file, cb) => {
+      const fileTypes = /jpeg|jpg|png|gif/
+      const mimeType = fileTypes.test(file.mimetype)  
+      const extname = fileTypes.test(path.extname(file.originalname))
+
+      if(mimeType && extname) {
+          return cb(null, true)
+      }
+      cb('Give proper files formate to upload')
+  }
+}).single('avatar')
 module.exports = {
+    upload,
     modifierprofile,
     deleteAndArchiveProfile,
     modifierContact,

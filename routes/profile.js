@@ -8,10 +8,13 @@ const ProfileController = require('../controllers/profileController');
 const passport = require("passport");
 const { ROLES, inRole } = require("../security/Rolemiddleware");
 
+const multer = require('multer')
+const upload = multer({dest:'uploadsavatar/'})
 
 /* add profile route */
 router.post("/profile/create", 
 passport.authenticate("jwt", { session: false }),
+upload.single('avatar'),
 ProfileController.CreateProfile);
 
 /* get one profiles */
@@ -20,9 +23,10 @@ passport.authenticate("jwt", { session: false }),
 ProfileController.FindSingleProfile);
 
  /* modif profile connecter */
-router.post("/profile/modif", 
-passport.authenticate("jwt", { session: false }),
-ProfileController.modifierprofile);
+ router.post("/profile/modif", 
+ passport.authenticate("jwt", { session: false }),
+ upload.single('avatar'),
+ ProfileController.modifierprofile);
 
 //admin
 /* get all profiles */

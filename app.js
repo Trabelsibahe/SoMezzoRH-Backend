@@ -27,6 +27,9 @@ app.get("/", (req, res) => {
 // profile
 app.use("/api", profileRoute);
 
+//static avatar Folder
+app.use('/uploadsavatar', express.static('./uploadsavatar'))
+
 // archive
 app.use("/api", archiveRoute);
 
