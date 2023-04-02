@@ -7,45 +7,35 @@ const path = require('path')
 
 
 
-// create profile
-const CreateProfile = async (req, res) => {
-  const {errors, isValid} = ValidateProfile(req.body, req.file);
-  const newsObj = {
-    tel: req.body.tel,
-    ville: req.body.ville,
-    pays: req.body.pays,
-    codepostal: req.body.codepostal,
-    adresse: req.body.adresse,
-    avatar: req.file.path, // assigner l'emplacement de l'image à la propriété image
-    user: req.user.id
 
-  };
+// create profile
+const CreateProfile = async (req ,res)=>{
+  const {errors, isValid} = ValidateProfile(req.body)
   try {
-    if (!isValid) {
-      res.status(404).json(errors);
-    } else {
-      ProfileModel.findOne({ user: req.user.id }).then(async (profile) => {
-        if (!profile) {
-          req.body.user = req.user.id;
-          await ProfileModel.create(newsObj);
-          res
-            .status(200)
-            .json({ message: "Votre profil a été créé avec succès !" });
-        } else {
-          await ProfileModel.findOneAndUpdate(
-            { _id: profile._id },
-            newsObj, // mettre à jour la propriété image avec l'emplacement de l'image
-            { new: true }
-          ).then((result) => {
-            res.status(200).json(result);
-          });
-        }
-      });
-    }
+      if(!isValid){
+        res.status(404).json(errors)
+      }else{
+          ProfileModel.findOne({user: req.user.id})
+      .then(async (profile)=>{
+          if(!profile){
+              req.body.user = req.user.id
+              await ProfileModel.create(req.body)
+              res.status(200).json({message: "Votre profil a été créé avec succès !"})
+          }else{
+             await  ProfileModel.findOneAndUpdate(
+                  {_id: profile._id},
+                  req.body,
+                  {new: true}
+              ).then(result=>{
+                  res.status(200).json(result)
+              })
+          }
+      })
+      }
   } catch (error) {
-    res.status(404).json(error.message);
+       res.status(404).json(error.message)
   }
-};
+}
 
 
 //
