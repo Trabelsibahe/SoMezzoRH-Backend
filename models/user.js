@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
   {
-    utilisateur: "string",
+    nom: "string",
+    prenom : "string",
     matricule: {
       type: "string",
       trim: true,//sans espace 
@@ -11,6 +12,9 @@ const User = new Schema(
     },
     password: "string",
     role: "string",
+    operation: "string",
+    titre : "string",
+    active : "boolean"
   },
   {
     timestamps: true,

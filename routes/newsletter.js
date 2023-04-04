@@ -17,11 +17,12 @@ router.post(
     upload.single('imgurl'),
     newsletterController.ajouternews,
   );
-  /* delete profiles */
+  /* delete newsletter */
 router.delete("/news/:id", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 newsletterController.Deletenews);
+
 /* get all news */
 router.get("/get/news", 
 passport.authenticate("jwt", { session: false }),

@@ -1,6 +1,9 @@
 
 const ArchiveModel = require('../models/archives')
 const ProfileModel = require('../models/profile')
+
+
+//get all archives 
 const FindArchive = async (req ,res)=>{
     try {
        const data =  await ArchiveModel.find().populate('user', ["utilisateur", "matricule", "role"])
@@ -10,7 +13,7 @@ const FindArchive = async (req ,res)=>{
         res.status(404).json(error.message)
     }
 }
-//profile
+//delete archive to profile
 const deleteArchive = async (req, res) => {
     const id = req.params.id;
     try {
@@ -48,8 +51,6 @@ const deleteArchive = async (req, res) => {
       res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
     }
   }
-
-
 
 module.exports = {
    FindArchive,

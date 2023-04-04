@@ -2,6 +2,8 @@ const { query } = require('express');
 const NewsletterModel = require('../Models/newsletter');
 const multer = require('multer')
 const path = require('path')
+
+//add newsletters
 const ajouternews = (req, res) => {
     const newsObj = {
         titre: req.body.titre,
@@ -27,8 +29,8 @@ const listerNews = async (req ,res)=>{
         res.status(404).json(error.message)
     }
 }
-//  Upload Image Controller
 
+//  Upload Image Controller
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads')
@@ -53,6 +55,7 @@ const upload = multer({
     }
 }).single('imgurl')
 
+//delete newsletters
 const Deletenews = async (req ,res)=>{
     try {
         const data =  await NewsletterModel.findOneAndRemove({_id: req.params.id})

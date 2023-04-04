@@ -35,25 +35,17 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 ProfileController.FindAllProfiles);
 
-/* delete profiles */
-router.delete("/profiles/:id", 
-passport.authenticate("jwt", { session: false }),
-inRole(ROLES.EXPERT),
-ProfileController.DeleteProfile);
-
 /* modifier profile */
 router.post("/profile/:id", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
-ProfileController.modifierContact);
-/* supprimer profile */
+ProfileController.modifierProfileById);
+
+/* Archive profile */
 router.delete("/profilesupp/:id", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 ProfileController.deleteAndArchiveProfile);
 
-router.get("/serchmatricule", 
-passport.authenticate("jwt", { session: false }),
-inRole(ROLES.EXPERT),
-ProfileController.searchByMatricule);
+
 module.exports = router;

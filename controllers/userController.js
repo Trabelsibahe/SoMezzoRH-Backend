@@ -81,9 +81,13 @@ const Login = async (req, res) => {
               var token = jwt.sign(
                 {
                   id: user._id,
-                  utilisateur: user.utilisateur,
+                  nom: user.nom,
+                  prenom: user.prenom,
                   matricule: user.matricule,
                   role: user.role,
+                  operation: user.operation,
+                  active: user.active,
+                  titre: user.titre,
                 },
                 PRIVATE_KEY,
                 { expiresIn: "1d" }

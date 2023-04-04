@@ -22,7 +22,7 @@ const CreateProfile = async (req, res) => {
     size: 7920
   }
 
-  const newsObj = {
+  const profileObj = {
     tel: req.body.tel,
     ville: req.body.ville,
     pays: req.body.pays,
@@ -41,13 +41,13 @@ const CreateProfile = async (req, res) => {
       ProfileModel.findOne({ user: req.user.id }).then(async (profile) => {
         if (!profile) {
           req.body.user = req.user.id;
-          await ProfileModel.create(newsObj);
+          await ProfileModel.create(profileObj);
           res.status(200);
           res.json({ message: "Votre profil a été créé avec succès !" });
         } else {
           await ProfileModel.findOneAndUpdate(
             { _id: profile._id },
-            newsObj, // mettre à jour la propriété image avec l'emplacement de l'image
+            profileObj, // mettre à jour la propriété image avec l'emplacement de l'image
             { new: true }
           ).then((result) => {
             res.status(200).json(result);
@@ -60,12 +60,10 @@ const CreateProfile = async (req, res) => {
 
   }
 };
-
-
-//
+//toute la liste des employes
 const FindAllProfiles = async (req, res) => {
   try {
-    const data = await ProfileModel.find().populate('user', ["utilisateur", "matricule", "role"])
+    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
     res.status(200).json(data)
 
   } catch (error) {
@@ -75,78 +73,47 @@ const FindAllProfiles = async (req, res) => {
 
 const FindSingleProfile = async (req, res) => {
   try {
-    const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["utilisateur", "matricule", "role"])
+    const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
     res.status(200).json(data)
 
   } catch (error) {
     res.status(404).json(error.message)
   }
 }
-
-const DeleteProfile = async (req, res) => {
-  try {
-    const data = await ProfileModel.findOneAndRemove({ _id: req.params.id })
-    res.status(200).json({ message: "ce compte a été supprimé avec succès." })
-
-  } catch (error) {
-    res.status(404).json(error.message)
-  }
-}
-
-
-//fonction modifier profile
-const modifierContact = async (req, res) => {
+//fonction modifier profile (CRUD)
+const modifierProfileById = async (req, res) => {
   const param = req.params.id;
   const { user, ville, tel, pays, codepostal } = req.body;
 
   try {
-    const modifiedContact = await ProfileModel.findById(param).populate('user');
-    if (!modifiedContact) {
-      return res.status(404).json({ error: "Contact introuvable" });
+    const modifierProfile = await ProfileModel.findById(param).populate('user');
+    if (!modifierProfile) {
+      return res.status(404).json({ error: "Profile introuvable" });
     }
 
     if (user) {
-      modifiedContact.user.utilisateur = user.utilisateur;
-      modifiedContact.user.matricule = user.matricule;
-      modifiedContact.user.role = user.role;
-      await modifiedContact.user.save();
+      modifierProfile.user.nom = user.nom;
+      modifierProfile.user.prenom = user.prenom;
+      modifierProfile.user.matricule = user.matricule;
+      modifierProfile.user.role = user.role;
+      modifierProfile.user.operation = user.operation;
+      modifierProfile.user.titre = user.titre;
+      modifierProfile.user.active = user.active;
+      await modifierProfile.user.save();
     }
 
-    modifiedContact.ville = ville || modifiedContact.ville;
-    modifiedContact.tel = tel || modifiedContact.tel;
-    modifiedContact.pays = pays || modifiedContact.pays;
-    modifiedContact.codepostal = codepostal || modifiedContact.codepostal;
+    modifierProfile.ville = ville || modifierProfile.ville;
+    modifierProfile.tel = tel || modifierProfile.tel;
+    modifierProfile.pays = pays || modifierProfile.pays;
+    modifierProfile.codepostal = codepostal || modifierProfile.codepostal;
 
-    await modifiedContact.save();
+    await modifierProfile.save();
 
-    res.status(200).json({ message: "Contact modifié avec succès", data: modifiedContact });
+    res.status(200).json({ message: "Profile modifié avec succès", data: modifierProfile });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
-
-
-//fonction recherche par matricule dans profile
-const searchByMatricule = async (req, res) => {
-  try {
-    const matricule = req.query.matricule;
-    const user = await UserModel.findOne({ matricule: { $regex: new RegExp(matricule, "i") } });
-    if (user) {
-      const profile = await ProfileModel.findOne({ user: user.id });
-      if (profile) {
-        res.json({ user, profile });
-      } else {
-        res.status(404).send('Profil introuvable');
-      }
-    } else {
-      res.status(404).send('Utilisateur introuvable');
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Erreur serveur');
-  }
-};
-
 //archive
 const deleteAndArchiveProfile = async (req, res) => {
   const id = req.params.id;
@@ -186,40 +153,42 @@ const deleteAndArchiveProfile = async (req, res) => {
   }
 }
 
-
 //fonction modifier profile connecter 
 const modifierprofile = async (req, res) => {
   const { user, ville, tel, pays, codepostal } = req.body;
 
   try {
-    const modifiedContact = await ProfileModel.findOne({ user: req.user.id }).populate('user');
-    if (!modifiedContact) {
-      return res.status(404).json({ error: "Contact introuvable" });
+    const modifiedProfile = await ProfileModel.findOne({ user: req.user.id }).populate('user');
+    if (!modifiedProfile) {
+      return res.status(404).json({ error: "Profile introuvable" });
     }
 
     if (user) {
-      modifiedContact.user.utilisateur = user.utilisateur;
-      modifiedContact.user.matricule = user.matricule;
-      modifiedContact.user.role = user.role;
-      await modifiedContact.user.save();
+      modifiedProfile.user.nom = user.nom;
+      modifiedProfile.user.prenom = user.prenom;
+      modifiedProfile.user.matricule = user.matricule;
+      modifiedProfile.user.role = user.role;
+      modifiedProfile.user.operation = user.operation;
+      modifiedProfile.user.titre = user.titre;
+      modifiedProfile.user.active = user.active;
+      await modifiedProfile.user.save();
     }
 
-    modifiedContact.ville = ville || modifiedContact.ville;
-    modifiedContact.tel = tel || modifiedContact.tel;
-    modifiedContact.pays = pays || modifiedContact.pays;
-    modifiedContact.codepostal = codepostal || modifiedContact.codepostal;
+    modifiedProfile.ville = ville || modifiedProfile.ville;
+    modifiedProfile.tel = tel || modifiedProfile.tel;
+    modifiedProfile.pays = pays || modifiedProfile.pays;
+    modifiedProfile.codepostal = codepostal || modifiedProfile.codepostal;
     if (req.file) {
-      modifiedContact.avatar = req.file.path;
+      modifiedProfile.avatar = req.file.path;
     }
-    await modifiedContact.save();
+    await modifiedProfile.save();
 
-    res.status(200).json({ message: "Contact modifié avec succès", data: modifiedContact });
+    res.status(200).json({ message: "Profile modifié avec succès", data: modifiedProfile });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 //  Upload Image Controller
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploadsavatar')
@@ -252,10 +221,7 @@ module.exports = {
   upload,
   modifierprofile,
   deleteAndArchiveProfile,
-  modifierContact,
-  searchByMatricule,
+  modifierProfileById,
   CreateProfile,
   FindAllProfiles,
-  FindSingleProfile,
-  DeleteProfile
-}
+  FindSingleProfile,}
