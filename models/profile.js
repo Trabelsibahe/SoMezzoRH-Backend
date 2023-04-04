@@ -8,10 +8,10 @@ const UserProfile = new Schema(
       ref: "users",
       required: true
     },
-    tel: "string",
+    tel: "number",
     ville: "string",//city
     pays: "string",//country
-    codepostal: "string",//postalcode
+    codepostal: "number",//postalcode
     adresse: "string",//address
     avatar: "string",
     email:"string",

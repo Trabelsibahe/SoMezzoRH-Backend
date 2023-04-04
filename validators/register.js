@@ -16,32 +16,32 @@ module.exports = function ValidateRegister(data) {
   
 //test+msg erreur 
   if (validator.isEmpty(data.nom)) {
-    errors.nom = "entrez nom ";
+    errors.nom = "Veuillez saisir un nom.";
   }
   if (validator.isEmpty(data.prenom)) {
-    errors.prenom = "entrez prenom ";
+    errors.prenom = "Veuillez saisir un prénom.";
   }
   if (validator.isEmpty(data.operation)) {
-    errors.operation = "entrez operation ";
+    errors.operation = "Veuillez entrer le nom de l'opération.";
   }
   if (validator.isEmpty(data.active)) {
-    errors.active = "active oui ou non";
+    errors.active = "Status active True or False.";
   }
   if (validator.isEmpty(data.matricule)) {
-    errors.matricule = "Veuillez entrez le matricule";
+    errors.matricule = "Veuillez entrer une matricule valide.";
   }
   if (validator.isEmpty(data.role)) {
-    errors.role = "Veuillez choisir le role";
+    errors.role = "Veuillez choisir un role.";
   }
 
   if (validator.isEmpty(data.password)) {
-    errors.password = "Veuillez entrez le mot de passe";
+    errors.password = "Veuillez entrez un mot de passe.";
   }
   if(!validator.equals(data.password, data.confirm)){
-    errors.confirm = "verifier le mot de pass ";
+    errors.confirm = "Veuillez verifier le mot de passe.";
   }
   if (validator.isEmpty(data.confirm)) {
-    errors.confirm = "Veuillez entrez la confirmation de mot de passe";
+    errors.confirm = "Veuillez confirmer le mot de passe.";
   }
   
 

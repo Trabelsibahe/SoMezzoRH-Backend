@@ -7,14 +7,14 @@ const User = new Schema(
     prenom : "string",
     matricule: {
       type: "string",
-      trim: true,//sans espace 
+      trim: true, //sans espace 
       unique: true,
     },
     password: "string",
     role: "string",
     operation: "string",
     titre : "string",
-    active : "boolean"
+    active : "Boolean"
   },
   {
     timestamps: true,

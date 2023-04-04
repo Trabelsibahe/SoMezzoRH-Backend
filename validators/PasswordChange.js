@@ -12,17 +12,17 @@ module.exports = function ValidatePasswordChange(data) {
 
 
     if (validator.isEmpty(data.oldPassword)) {
-        errors.oldPassword = "Donner l'ancien mot de passe";
+        errors.oldPassword = "Veuillez saisir l'ancien mot de passe.";
     }
     if (validator.isEmpty(data.newPassword)) {
-        errors.newPassword = "Donner le nouveau mot de passe";
+        errors.newPassword = "Veuillez saisir le nouveau mot de passe.";
     }
 
     if (!validator.equals(data.newPassword, data.pConfirm)) {
-        errors.pConfirm = "verifier le mot de passe ";
+        errors.pConfirm = "Veuillez verifier le mot de passe.";
     }
     if (validator.isEmpty(data.pConfirm)) {
-        errors.pConfirm = "Entrer la confirmation de nouveau mot de passe";
+        errors.pConfirm = "Veuillez confirmer le nouveau mot de passe.";
     }
     return {
         errors,
