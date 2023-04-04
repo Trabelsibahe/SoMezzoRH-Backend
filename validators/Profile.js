@@ -21,29 +21,32 @@ module.exports = function ValidateProfile(data) {
   } */
 
   if (validator.isEmpty(data.tel)) {
-    errors.tel = "Veuillez entrer votre numéro ";
+    errors.tel = "Veuillez entrer votre Numéro de téléphone ";
   }
   if (validator.isEmpty(data.ville)) {
-    errors.ville = "Veuillez entrer votre ville. ";
+    errors.ville = "Veuillez entrer votre Ville. ";
   }
   if (validator.isEmpty(data.pays)) {
-    errors.pays = "Veuillez entrez votre pays ";
+    errors.pays = "Veuillez entrer votre Pays ";
   }
 
   if (validator.isEmpty(data.codepostal)) {
-    errors.codepostal = "Veuillez entrez votre code postal";
+    errors.codepostal = "Veuillez entrer votre Code postal";
   }
   if (validator.isEmpty(data.adresse)) {
-    errors.adresse = "Veuillez entrez votre adresse";
+    errors.adresse = "Veuillez entrer votre Adresse";
   }
   if (validator.isEmpty(data.gouvernorat)) {
-    errors.gouvernorat = "Veuillez entrez votre gouvernorat";
+    errors.gouvernorat = "Veuillez entrer votre Gouvernorat";
+  }
+  if (validator.isEmpty(data.email)) {
+    errors.email = "Veuillez entrer votre email";
   }
   if (!validator.isEmail(data.email)) {
-    errors.email = "Veuillez entrer votre email correctement";
+    errors.email = "Veuillez donner un email valide";
   }
   if (!validator.isDate(data.datenaiss)) {
-    errors.datenaiss = "Veuillez entrer une date de naissance valide";
+    errors.datenaiss = "Veuillez entrer votre Date de naissance";
   }
   return {
     errors,
