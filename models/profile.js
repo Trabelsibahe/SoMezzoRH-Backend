@@ -12,9 +12,11 @@ const UserProfile = new Schema(
     ville: "string",//city
     pays: "string",//country
     codepostal: "string",//postalcode
-    bio: "string",
     adresse: "string",//address
     avatar: "string",
+    email:"string",
+    datenaiss:"date",
+    gouvernorat :"string",
 
   },
   {

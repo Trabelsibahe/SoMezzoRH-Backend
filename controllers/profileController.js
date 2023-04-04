@@ -24,6 +24,9 @@ const CreateProfile = async (req, res) => {
 
   const profileObj = {
     tel: req.body.tel,
+    email: req.body.email,
+    datenaiss: req.body.datenaiss,
+    gouvernorat: req.body.gouvernorat,
     ville: req.body.ville,
     pays: req.body.pays,
     codepostal: req.body.codepostal,
@@ -106,6 +109,10 @@ const modifierProfileById = async (req, res) => {
     modifierProfile.tel = tel || modifierProfile.tel;
     modifierProfile.pays = pays || modifierProfile.pays;
     modifierProfile.codepostal = codepostal || modifierProfile.codepostal;
+    modifierProfile.email = email || modifierProfile.email;
+    modifierProfile.gouvernorat = gouvernorat || modifierProfile.gouvernorat;
+    modifierProfile.datenaiss = datenaiss || modifierProfile.datenaiss;
+    modifierProfile.adresse = adresse || modifierProfile.adresse;
 
     await modifierProfile.save();
 
@@ -131,8 +138,10 @@ const deleteAndArchiveProfile = async (req, res) => {
       ville: profileToDelete.ville,
       pays: profileToDelete.pays,
       codepostal: profileToDelete.codepostal,
-      bio: profileToDelete.bio,
       adresse: profileToDelete.adresse,
+      email: profileToDelete.email,
+      datenaiss: profileToDelete.datenaiss,
+      gouvernorat: profileToDelete.gouvernorat,
       createdAt: profileToDelete.createdAt,
       updatedAt: profileToDelete.updatedAt,
     };
@@ -155,7 +164,7 @@ const deleteAndArchiveProfile = async (req, res) => {
 
 //fonction modifier profile connecter 
 const modifierprofile = async (req, res) => {
-  const { user, ville, tel, pays, codepostal } = req.body;
+  const { user, ville, tel, pays, codepostal , adresse , email , datenaiss , gouvernorat} = req.body;
 
   try {
     const modifiedProfile = await ProfileModel.findOne({ user: req.user.id }).populate('user');
@@ -173,7 +182,10 @@ const modifierprofile = async (req, res) => {
       modifiedProfile.user.active = user.active;
       await modifiedProfile.user.save();
     }
-
+    modifiedProfile.adresse = adresse || modifiedProfile.adresse;
+    modifiedProfile.email = email || modifiedProfile.email;
+    modifiedProfile.datenaiss = datenaiss || modifiedProfile.datenaiss;
+    modifiedProfile.gouvernorat = gouvernorat || modifiedProfile.gouvernorat;
     modifiedProfile.ville = ville || modifiedProfile.ville;
     modifiedProfile.tel = tel || modifiedProfile.tel;
     modifiedProfile.pays = pays || modifiedProfile.pays;

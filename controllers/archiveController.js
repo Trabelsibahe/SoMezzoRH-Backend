@@ -6,7 +6,7 @@ const ProfileModel = require('../models/profile')
 //get all archives 
 const FindArchive = async (req ,res)=>{
     try {
-       const data =  await ArchiveModel.find().populate('user', ["utilisateur", "matricule", "role"])
+       const data =  await ArchiveModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
        res.status(200).json(data)
 
     } catch (error) {
@@ -30,7 +30,9 @@ const deleteArchive = async (req, res) => {
         ville: archiveToDelete.ville,
         pays: archiveToDelete.pays,
         codepostal: archiveToDelete.codepostal,
-        bio: archiveToDelete.bio,
+        email: archiveToDelete.email,
+        datenaiss: archiveToDelete.datenaiss,
+        gouvernorat: archiveToDelete.gouvernorat,
         adresse: archiveToDelete.adresse,
         createdAt: archiveToDelete.createdAt,
         updatedAt: archiveToDelete.updatedAt,
