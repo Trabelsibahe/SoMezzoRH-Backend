@@ -7,7 +7,7 @@ module.exports = function ValidateAbsence(data) {
 
   data.type = !isEmpty(data.type) ? data.type : "";
   data.dateDebut = !isEmpty(data.dateDebut) ? data.dateDebut : "";
-  data.deteFin = !isEmpty(data.deteFin) ? data.deteFin : "";
+  data.dateFin = !isEmpty(data.dateFin) ? data.dateFin : "";
 
   if (validator.isEmpty(data.type)) {
     errors.type = "Veuillez entrer votre type d'absence";
@@ -15,13 +15,13 @@ module.exports = function ValidateAbsence(data) {
   if (!validator.isDate(data.dateDebut)) {
     errors.dateDebut = "Veuillez entrer votre le date de debut d'absence ";
   }
-  if (!validator.isDate(data.deteFin)) {
-    errors.deteFin = "Veuillez entrer votre le date de fin d'absence ";
+  if (!validator.isDate(data.dateFin)) {
+    errors.dateFin = "Veuillez entrer votre le date de fin d'absence ";
   }
   if (
     !validator.isEmpty(data.dateDebut) &&
-    !validator.isEmpty(data.deteFin) &&
-    isBefore(new Date(data.deteFin), new Date(data.dateDebut))
+    !validator.isEmpty(data.dateFin) &&
+    isBefore(new Date(data.dateFin), new Date(data.dateDebut))
   ) {
     errors.dateDebut = "La date de début doit être antérieure à la date de fin";
   }

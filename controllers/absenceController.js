@@ -7,7 +7,7 @@ const CreateAbsence = async (req, res) => {
   const absenceobj = {
     type: req.body.type,
     dateDebut: req.body.dateDebut,
-    deteFin: req.body.deteFin,
+    dateFin: req.body.dateFin,
     commentaire: req.body.commentaire,
     user: req.user.id
   };
@@ -16,29 +16,37 @@ const CreateAbsence = async (req, res) => {
     if (!isValid) {
       res.status(404).json(errors);
     } else {
-      const absence = await AbsenceModel.findOne({ user: req.user.id });
+      let absence = await AbsenceModel.findOne({ user: req.user.id });
       if (!absence) {
-        absenceobj.absences = [];
-        absenceobj.absences.push(await AbsenceModel.create(absenceobj)._id);
-        await AbsenceModel.create(absenceobj);
-        res.status(200);
-        res.json({ message: "Votre absence a été créé avec succès !" });
+        absence = await AbsenceModel.create({ user: req.user.id, absences: [absenceobj] });
       } else {
         if (!absence.absences) {
-          absence.absences = [];
+          absence.absences = [absenceobj];
+        } else {
+          absence.absences.push(absenceobj);
         }
-        const newAbsence = await AbsenceModel.create(absenceobj);
-        absence.absences.push(newAbsence._id);
         await absence.save();
-        res.status(200);
-        res.json({ message: "Votre absence a été créé avec succès !" });
       }
+      res.status(200);
+      res.json({ message: "Votre absence a été créé avec succès !" });
     }
   } catch (error) {
     res.status(404).json(error.message);
   }
 };
 
+
+
+const FindAllAbsences = async (req, res) => {
+  try {
+    const absences = await AbsenceModel.find({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom"])
+    res.status(200).json(absences)
+
+  } catch (error) {
+    res.status(404).json(error.message)
+  }
+}
 module.exports = {
+  FindAllAbsences,
   CreateAbsence,
 }

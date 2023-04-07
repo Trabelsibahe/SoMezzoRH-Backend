@@ -7,17 +7,27 @@ const Absence = new Schema(
         ref: "users",
         required: true
       },
-    type:"string",
-    dateDebut:"date",
-    deteFin:"date",
-    commentaire:"string",
-    etat:"Boolean"
-
-  
+      absences: [
+        {
+          type: {
+            type: String,
+            required: true
+          },
+          dateDebut: {
+            type: Date,
+            required: true
+          },
+          dateFin: {
+            type: Date,
+            required: true
+          },
+          commentaire: String,
+          etat: Boolean
+        }
+      ]
     },
     {
-      timestamps: true,
+      timestamps: true
     }
-  );
-  
-  module.exports = mongoose.model("absence", Absence);
+)
+  module.exports = mongoose.model("absences", Absence);

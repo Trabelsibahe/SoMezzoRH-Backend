@@ -14,4 +14,11 @@ const { ROLES, inRole } = require("../security/Rolemiddleware");
 router.post("/absence/add", 
 passport.authenticate("jwt", { session: false }),
 AbsenceController.CreateAbsence);
+
+
+/* get one absence */
+router.get("/absence/getone", 
+passport.authenticate("jwt", { session: false }),
+AbsenceController.FindAllAbsences);
 module.exports = router;
+
