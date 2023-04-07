@@ -8,7 +8,7 @@ const passport = require("passport");
 const profileRoute = require("./routes/profile");
 const archiveRoute= require ("./routes/archive")
 const newsletterRoute= require ("./routes/newsletter");
-
+const absenceRoute = require ("./routes/absence")
 
 
 // path
@@ -32,6 +32,9 @@ app.use('/uploadsavatar', express.static('./uploadsavatar'))
 
 // archive
 app.use("/api", archiveRoute);
+
+// absence
+app.use("/api", absenceRoute);
 
 // newsletter
 app.use("/api", newsletterRoute);
