@@ -35,9 +35,17 @@ const CreateAbsence = async (req, res) => {
   }
 };
 
-
-
 const FindAllAbsences = async (req, res) => {
+  try {
+    const data = await AbsenceModel.find().populate('user', ["matricule", "role","nom", "prenom"])
+    res.status(200).json(data)
+
+  } catch (error) {
+    res.status(404).json(error.message)
+  }
+}
+
+const FindAbsences = async (req, res) => {
   try {
     const absences = await AbsenceModel.find({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom"])
     res.status(200).json(absences)
@@ -48,5 +56,6 @@ const FindAllAbsences = async (req, res) => {
 }
 module.exports = {
   FindAllAbsences,
+  FindAbsences,
   CreateAbsence,
 }
