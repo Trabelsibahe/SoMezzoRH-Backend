@@ -1,16 +1,19 @@
 const AbsenceModel = require('../models/absence')
 const Validateabsence = require("../validators/absence")
 
+
+
 // create absence
 const CreateAbsence = async (req, res) => {
   const { errors, isValid } = Validateabsence(req.body);
+
   const absenceobj = {
     type: req.body.type,
     dateDebut: req.body.dateDebut,
     dateFin: req.body.dateFin,
     commentaire: req.body.commentaire,
-    user: req.user.id
-  };
+    etat: req.body.commentaire = "En attente",
+    };
 
   try {
     if (!isValid) {
@@ -35,6 +38,7 @@ const CreateAbsence = async (req, res) => {
   }
 };
 
+// afficher tous les absences
 const FindAllAbsences = async (req, res) => {
   try {
     const data = await AbsenceModel.find().populate('user', ["matricule", "role","nom", "prenom"])
@@ -45,6 +49,8 @@ const FindAllAbsences = async (req, res) => {
   }
 }
 
+
+ // afficher une seul absence par ID
 const FindAbsences = async (req, res) => {
   try {
     const absences = await AbsenceModel.find({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom"])
@@ -54,6 +60,10 @@ const FindAbsences = async (req, res) => {
     res.status(404).json(error.message)
   }
 }
+
+
+
+
 module.exports = {
   FindAllAbsences,
   FindAbsences,

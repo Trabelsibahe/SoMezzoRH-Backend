@@ -22,7 +22,7 @@ const Absence = new Schema(
             required: true
           },
           commentaire: String,
-          etat: Boolean
+          etat: String,
         }
       ]
     },
