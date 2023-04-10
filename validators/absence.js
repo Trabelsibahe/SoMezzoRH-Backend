@@ -1,6 +1,13 @@
 const isEmpty = require("./isEmpty");
 const validator = require("validator");
-const { isBefore, addYears } = require("date-fns");
+const { isBefore, isAfter } = require("date-fns");
+
+const currentDate = new Date();
+const oneYearFromNow = new Date();
+oneYearFromNow.setFullYear(currentDate.getFullYear() + 1);
+
+
+
 
 module.exports = function ValidateAbsence(data) {
   let errors = {};
@@ -23,21 +30,22 @@ module.exports = function ValidateAbsence(data) {
   if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(data.dateDebut), new Date())) {
     errors.dateDebut = "La date de début d'absence ne peut pas être une date passée.";
   }
-  
+
   // Check for past date in dateFin
   if (!validator.isEmpty(data.dateFin) && isBefore(new Date(data.dateFin), new Date())) {
     errors.dateFin = "La date de fin d'absence ne peut pas être une date passée.";
   }
 
   // Check for future date over one year in dateDebut
-  if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(), addYears(new Date(data.dateDebut), 1))) {
-    errors.dateDebut = "La date de début d'absence doit être au moins un an à partir de la date actuelle.";
+  if (!validator.isEmpty(data.dateDebut) && isAfter(new Date(data.dateDebut), oneYearFromNow)) {
+    errors.dateDebut = "La date de début d'absence ne doit pas dépasser un an à partir de la date actuelle.";
   }
-  
+
   // Check for future date over one year in dateFin
-  if (!validator.isEmpty(data.dateFin) && isBefore(new Date(), addYears(new Date(data.dateFin), 1))) {
-    errors.dateFin = "La date de fin d'absence doit être au moins un an à partir de la date actuelle.";
+  if (!validator.isEmpty(data.dateFin) && isAfter(new Date(data.dateFin), oneYearFromNow)) {
+    errors.dateFin = "La date de fin d'absence ne doit pas dépasser un an à partir de la date actuelle.";
   }
+
   if (
     !validator.isEmpty(data.dateDebut) &&
     !validator.isEmpty(data.dateFin) &&
