@@ -140,6 +140,7 @@ const deleteAndArchiveProfile = async (req, res) => {
       codepostal: profileToDelete.codepostal,
       adresse: profileToDelete.adresse,
       email: profileToDelete.email,
+      avatar:profileToDelete.avatar,
       datenaiss: profileToDelete.datenaiss,
       gouvernorat: profileToDelete.gouvernorat,
       createdAt: profileToDelete.createdAt,
