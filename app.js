@@ -29,7 +29,8 @@ app.use("/api", profileRoute);
 
 //static avatar Folder
 app.use('/uploadsavatar', express.static('./uploadsavatar'))
-
+//static justification  Folder
+app.use('/uploadsjustif', express.static('./uploadsjustif'))
 // archive
 app.use("/api", archiveRoute);
 
@@ -43,7 +44,6 @@ app.use("/api", newsletterRoute);
 app.use("/api", userRoute);
 
 //static Images Folder
-
 app.use('/uploads', express.static('./uploads'))
 app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");

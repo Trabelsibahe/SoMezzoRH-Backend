@@ -1,19 +1,24 @@
+const { query } = require('express');
 const AbsenceModel = require('../models/absence')
 const Validateabsence = require("../validators/absence")
-
+const userModel = require('../models/user')
+const multer = require('multer')
+const path = require('path')
 
 
 // create absence
 const CreateAbsence = async (req, res) => {
   const { errors, isValid } = Validateabsence(req.body);
-
+  const default_justif= {
+    fieldname: 'justif',
+  }
   const absenceobj = {
     type: req.body.type,
     dateDebut: req.body.dateDebut,
     dateFin: req.body.dateFin,
     commentaire: req.body.commentaire,
-    etat: req.body.commentaire = "En attente",
-    };
+    justif: req.file ? req.file.path : default_justif.path,         // assigner l'emplacement de l'image à la propriété image
+  };
 
   try {
     if (!isValid) {
@@ -61,10 +66,35 @@ const FindAbsences = async (req, res) => {
   }
 }
 
+//  Upload Image Controller
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploadsjustif')
+  },
+  filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname))
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: '1000000' },
+  fileFilter: (req, file, cb) => {
+      const fileTypes = /jpeg|jpg|png|gif/
+      const mimeType = fileTypes.test(file.mimetype)  
+      const extname = fileTypes.test(path.extname(file.originalname))
+
+      if(mimeType && extname) {
+          return cb(null, true)
+      }
+      cb('Give proper files formate to upload')
+  }
+}).single('justif')
 
 
 
 module.exports = {
+  upload,
   FindAllAbsences,
   FindAbsences,
   CreateAbsence,

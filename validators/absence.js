@@ -2,12 +2,13 @@ const isEmpty = require("./isEmpty");
 const validator = require("validator");
 const { isBefore, addYears } = require("date-fns");
 
-module.exports = function ValidateAbsence(data) {
+module.exports = function ValidateAbsence(data,file) {
   let errors = {};
 
   data.type = !isEmpty(data.type) ? data.type : "";
   data.dateDebut = !isEmpty(data.dateDebut) ? data.dateDebut : "";
   data.dateFin = !isEmpty(data.dateFin) ? data.dateFin : "";
+
 
   if (validator.isEmpty(data.type)) {
     errors.type = "Veuillez entrer le type d'absence.";
@@ -20,7 +21,7 @@ module.exports = function ValidateAbsence(data) {
   }
 
   // Check for past date in dateDebut
-  if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(data.dateDebut), new Date())) {
+ /* if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(data.dateDebut), new Date())) {
     errors.dateDebut = "La date de début d'absence ne peut pas être une date passée.";
   }
   
@@ -44,7 +45,7 @@ module.exports = function ValidateAbsence(data) {
     isBefore(new Date(data.dateFin), new Date(data.dateDebut))
   ) {
     errors.dateDebut = "La date de début d'absence doit être antérieure à la date de fin d'absence.";
-  }
+  }*/
 
   return {
     errors,

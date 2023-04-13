@@ -1,7 +1,5 @@
 const express = require('express');
-
 const router = express.Router();
-
 const newsletterController = require('../controllers/newsletterController');
 const multer = require('multer')
 const upload = multer({dest:'uploads/'})
