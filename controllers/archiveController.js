@@ -54,8 +54,18 @@ const deleteArchive = async (req, res) => {
       res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
     }
   }
+//counter les archives
+const countArchives = async (req, res) => {
+  try {
+    const count = await ArchiveModel.countDocuments();
+    res.status(200).json({ count });
 
+  } catch (error) {
+    res.status(404).json(error.message);
+  }
+};
 module.exports = {
+  countArchives,
    FindArchive,
    deleteArchive
   }

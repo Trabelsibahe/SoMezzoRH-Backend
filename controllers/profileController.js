@@ -229,8 +229,18 @@ const upload = multer({
   }
 }).single('avatar')
 
+//counter les profiles
+const countProfiles = async (req, res) => {
+  try {
+    const count = await ProfileModel.countDocuments();
+    res.status(200).json({ count });
 
+  } catch (error) {
+    res.status(404).json(error.message);
+  }
+};
 module.exports = {
+  countProfiles,
   upload,
   modifierprofile,
   deleteAndArchiveProfile,
