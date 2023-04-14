@@ -33,6 +33,7 @@ const supprimerNews = (req, res) => {
             news.forEach((item) => {
                 item.remove()
             })
+            console.log(`News supprimées : ${news.length}`)
             return res.status(200).json({ message: `News supprimées : ${news.length}` })  
         }
     })
