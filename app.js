@@ -8,8 +8,8 @@ const passport = require("passport");
 const profileRoute = require("./routes/profile");
 const archiveRoute= require ("./routes/archive")
 const newsletterRoute= require ("./routes/newsletter");
-const absenceRoute = require ("./routes/absence")
-
+const absenceRoute = require ("./routes/absence");
+const operationRoute = require ("./routes/operation");
 
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
@@ -31,6 +31,7 @@ app.use("/api", profileRoute);
 app.use('/uploadsavatar', express.static('./uploadsavatar'))
 //static justification  Folder
 app.use('/uploadsjustif', express.static('./uploadsjustif'))
+
 // archive
 app.use("/api", archiveRoute);
 
@@ -39,6 +40,9 @@ app.use("/api", absenceRoute);
 
 // newsletter
 app.use("/api", newsletterRoute);
+
+// operation
+app.use("/api", operationRoute );
 
 //register login
 app.use("/api", userRoute);

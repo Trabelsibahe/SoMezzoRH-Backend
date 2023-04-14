@@ -74,6 +74,7 @@ const FindAllProfiles = async (req, res) => {
   }
 }
 
+// single profile
 const FindSingleProfile = async (req, res) => {
   try {
     const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
@@ -239,6 +240,7 @@ const countProfiles = async (req, res) => {
     res.status(404).json(error.message);
   }
 };
+
 module.exports = {
   countProfiles,
   upload,
