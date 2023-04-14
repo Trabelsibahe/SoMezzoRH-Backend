@@ -13,14 +13,13 @@ router.post(
     passport.authenticate('jwt', { session: false }),
     inRole(ROLES.EXPERT),
     upload.single('imgurl'),
-    newsletterController.ajouternews,
+    newsletterController.ajouterNews,
   );
   /* delete newsletter */
-router.delete("/news/:id", 
-passport.authenticate("jwt", { session: false }),
-inRole(ROLES.EXPERT),
-newsletterController.Deletenews);
-
+  router.delete("/news/supp", 
+  passport.authenticate("jwt", { session: false }),
+  inRole(ROLES.EXPERT),
+  newsletterController.supprimerNews);
 /* get all news */
 router.get("/get/news", 
 passport.authenticate("jwt", { session: false }),

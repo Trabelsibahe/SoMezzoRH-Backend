@@ -17,6 +17,7 @@ const CreateAbsence = async (req, res) => {
     dateDebut: req.body.dateDebut,
     dateFin: req.body.dateFin,
     commentaire: req.body.commentaire,
+    etat: req.body.etat = "En attente" ,
     justif: req.file ? req.file.path : default_justif.path,         // assigner l'emplacement de l'image à la propriété image
   };
 

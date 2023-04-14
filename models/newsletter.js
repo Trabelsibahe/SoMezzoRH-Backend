@@ -6,6 +6,8 @@ const Newsletter = new Schema(
     titre: "string",
     description: "string",
     imgurl: "string",
+    dateCreation: "date",
+    dateSuppression: Date
   },
   {
     timestamps: true,
