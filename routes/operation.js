@@ -15,6 +15,10 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 AbsenceController.ListerOperation);
 
+router.get("/operation/absence", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+AbsenceController.ListerabsenceOperation);
 
 module.exports = router;
 

@@ -74,7 +74,6 @@ const FindAllProfiles = async (req, res) => {
   }
 }
 
-// single profile
 const FindSingleProfile = async (req, res) => {
   try {
     const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
@@ -87,7 +86,7 @@ const FindSingleProfile = async (req, res) => {
 //fonction modifier profile (CRUD)
 const modifierProfileById = async (req, res) => {
   const param = req.params.id;
-  const { user, tel, email, datenaiss, pays, gouvernorat, ville, codepostal, adresse } = req.body;
+  const { user, ville, tel, pays, codepostal } = req.body;
 
   try {
     const modifierProfile = await ProfileModel.findById(param).populate('user');
@@ -240,7 +239,6 @@ const countProfiles = async (req, res) => {
     res.status(404).json(error.message);
   }
 };
-
 module.exports = {
   countProfiles,
   upload,

@@ -28,16 +28,21 @@ const supprimerNews = (req, res) => {
     NewsletterModel.find({ dateSuppression: { $lte: dateActuelle } }, (err, news) => {
         if (err) {
             console.error(err)
-            return res.status(500).json({ error: 'Erreur serveur' })
+            if (res) {
+                return res.status(500).json({ error: 'Erreur serveur' })
+            }
         } else {
             news.forEach((item) => {
                 item.remove()
             })
             console.log(`News supprimées : ${news.length}`)
-            return res.status(200).json({ message: `News supprimées : ${news.length}` })  
+            if (res) {
+                return res.status(200).json({ message: `News supprimées : ${news.length}` })
+            }
         }
     })
 }
+
 
 
 setInterval(supprimerNews, 60 * 60 * 1000) 

@@ -47,7 +47,7 @@ const CreateAbsence = async (req, res) => {
 // afficher tous les absences
 const FindAllAbsences = async (req, res) => {
   try {
-    const data = await AbsenceModel.find().populate('user', ["matricule", "role","nom", "prenom"])
+    const data = await AbsenceModel.find().populate('user', ["matricule", "role","nom", "prenom","operation"])
     res.status(200).json(data)
 
   } catch (error) {
