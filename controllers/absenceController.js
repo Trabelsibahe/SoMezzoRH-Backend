@@ -55,7 +55,6 @@ const FindAllAbsences = async (req, res) => {
   }
 }
 
-
  // afficher une seul absence par ID
 const FindAbsences = async (req, res) => {
   try {
