@@ -92,8 +92,33 @@ const upload = multer({
 }).single('justif')
 
 
+const modifierAbsence = async (req, res) => {
+  const { id } = req.params;
+  const {  etat } = req.body;
+
+  try {
+    const absence = await AbsenceModel.findOne({ "absences._id": id });
+    if (!absence) {
+      return res.status(404).json({ message: "Absence introuvable" });
+    }
+
+    const absenceIndex = absence.absences.findIndex(
+      (absence) => absence._id.toString() === id
+    );
+
+    absence.absences[absenceIndex].etat = etat;
+
+    await absence.save();
+
+    res.status(200).json({ message: "Absence modifiée avec succès" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 module.exports = {
+  modifierAbsence,
   upload,
   FindAllAbsences,
   FindAbsences,

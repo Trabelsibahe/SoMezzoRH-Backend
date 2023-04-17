@@ -20,7 +20,10 @@ router.get("/absence/getone",
 passport.authenticate("jwt", { session: false }),
 AbsenceController.FindAbsences);
 
-
+/* modifier one absence */
+router.post("/modif/:id", 
+passport.authenticate("jwt", { session: false }),
+AbsenceController.modifierAbsence);
 //pour admin 
 /* get all absence */
 router.get("/absence/getall", 
