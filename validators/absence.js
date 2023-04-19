@@ -28,7 +28,7 @@ module.exports = function ValidateAbsence(data,file) {
   }
 
   // Check for past date in dateDebut
- /* if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(data.dateDebut), new Date())) {
+  if (!validator.isEmpty(data.dateDebut) && isBefore(new Date(data.dateDebut), new Date())) {
     errors.dateDebut = "La date de début d'absence ne peut pas être une date passée.";
   }
 
@@ -53,7 +53,7 @@ module.exports = function ValidateAbsence(data,file) {
     isBefore(new Date(data.dateFin), new Date(data.dateDebut))
   ) {
     errors.dateDebut = "La date de début d'absence doit être antérieure à la date de fin d'absence.";
-  }*/
+  }
 
   return {
     errors,
