@@ -42,9 +42,6 @@ const supprimerNews = (req, res) => {
         }
     })
 }
-
-
-
 setInterval(supprimerNews, 60 * 60 * 1000) 
 //fonction lister des news 
 const listerNews = async (req ,res)=>{
@@ -82,7 +79,7 @@ const upload = multer({
 }).single('imgurl')
 
 //delete newsletters
-/*const Deletenews = async (req ,res)=>{
+const Deletenews = async (req ,res)=>{
     try {
         const data =  await NewsletterModel.findOneAndRemove({_id: req.params.id})
         res.status(200).json({message: "ce news a été supprimé avec succès."})
@@ -90,9 +87,10 @@ const upload = multer({
      } catch (error) {
          res.status(404).json(error.message)
      }
-}*/
+}
 
 module.exports = {
+    Deletenews,
     supprimerNews,
     ajouterNews,
     upload,

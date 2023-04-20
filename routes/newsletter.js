@@ -20,6 +20,10 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   inRole(ROLES.EXPERT),
   newsletterController.supprimerNews);
+  router.delete("/news/:id", 
+  passport.authenticate("jwt", { session: false }),
+  inRole(ROLES.EXPERT),
+  newsletterController.Deletenews);
 /* get all news */
 router.get("/get/news", 
 passport.authenticate("jwt", { session: false }),
