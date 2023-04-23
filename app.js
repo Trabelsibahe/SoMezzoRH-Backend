@@ -10,7 +10,7 @@ const archiveRoute= require ("./routes/archive")
 const newsletterRoute= require ("./routes/newsletter");
 const absenceRoute = require ("./routes/absence");
 const operationRoute = require ("./routes/operation");
-
+const taskRoute = require("./routes/task");
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
@@ -43,6 +43,9 @@ app.use("/api", newsletterRoute);
 
 // operation
 app.use("/api", operationRoute );
+
+// task
+app.use("/api", taskRoute );
 
 //register login
 app.use("/api", userRoute);
