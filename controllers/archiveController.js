@@ -64,7 +64,41 @@ const countArchives = async (req, res) => {
     res.status(404).json(error.message);
   }
 };
+const modifierArchiveById = async (req, res) => {
+  const param = req.params.id;
+  const { user, ville, tel, pays, codepostal } = req.body;
+
+  try {
+    const modifierArchive = await ArchiveModel.findById(param).populate('user');
+    if (!modifierArchive) {
+      return res.status(404).json({ error: "Profile introuvable" });
+    }
+
+    if (user) {
+      modifierArchive.user.nom = user.nom;
+      modifierArchive.user.prenom = user.prenom;
+      modifierArchive.user.matricule = user.matricule;
+      modifierArchive.user.role = user.role;
+      modifierArchive.user.operation = user.operation;
+      modifierArchive.user.titre = user.titre;
+      modifierArchive.user.active = user.active;
+      await modifierArchive.user.save();
+    }
+
+    modifierArchive.ville = ville || modifierArchive.ville;
+    modifierArchive.tel = tel || modifierArchive.tel;
+    modifierArchive.pays = pays || modifierArchive.pays;
+    modifierArchive.codepostal = codepostal || modifierArchive.codepostal;
+
+    await modifierArchive.save();
+
+    res.status(200).json({ message: "Profile modifié avec succès", data: modifierArchive });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 module.exports = {
+  modifierArchiveById,
   countArchives,
    FindArchive,
    deleteArchive

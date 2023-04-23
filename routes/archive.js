@@ -26,6 +26,11 @@ router.get("/archives/nb",
 passport.authenticate('jwt', { session: false }),
 inRole(ROLES.EXPERT),
  ArchiveController.countArchives, );
+ router.post("/archive/modif/:id", 
+passport.authenticate('jwt', { session: false }),
+inRole(ROLES.EXPERT),
+ ArchiveController.modifierArchiveById, );
+
 
 
 module.exports = router;

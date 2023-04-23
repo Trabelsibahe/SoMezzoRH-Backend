@@ -86,7 +86,7 @@ const FindSingleProfile = async (req, res) => {
 //fonction modifier profile (CRUD)
 const modifierProfileById = async (req, res) => {
   const param = req.params.id;
-  const { user, ville, tel, pays, codepostal } = req.body;
+  const { user, ville, tel, pays, codepostal,email,gouvernorat,datenaiss,adresse } = req.body;
 
   try {
     const modifierProfile = await ProfileModel.findById(param).populate('user');
