@@ -35,7 +35,28 @@ const listerTask = async (req ,res)=>{
         res.status(404).json(error.message)
     }
 }
+const supprimerTask = (req, res) => {
+    const dateActuelle = new Date()
+    TaskModel.find({ dateSuppression: { $lte: dateActuelle } }, (err, tasks) => {
+        if (err) {
+            console.error(err)
+            if (res) {
+                return res.status(500).json({ error: 'Erreur serveur' })
+            }
+        } else {
+            tasks.forEach((item) => {
+                item.remove()
+            })
+            console.log(`task supprimées : ${tasks.length}`)
+            if (res) {
+                return res.status(200).json({ message: `task supprimées : ${tasks.length}` })
+            }
+        }
+    })
+}
+setInterval(supprimerTask, 60 * 60 * 1000) 
 module.exports = {
+    supprimerTask,
     ajouterTask,
     listerTask
 }

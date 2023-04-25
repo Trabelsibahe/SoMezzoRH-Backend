@@ -19,4 +19,11 @@ router.get("/getall/task",
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 taskController.listerTask);
+
+router.delete("/task/supp", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+taskController.supprimerTask);
+
+
 module.exports = router;
