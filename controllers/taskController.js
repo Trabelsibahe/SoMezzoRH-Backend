@@ -3,11 +3,12 @@ const TaskModel = require('../models/task');
 const ValidateTask = require("../validators/task")
 
 
-//add newsletters
+//add task
 const ajouterTask = (req, res) => {
     const { errors, isValid } = ValidateTask(req.body);
 
     const taskObj = {
+        user: req.user._id,
         titre: req.body.titre,
         description: req.body.description,
         dateCreation: new Date(req.body.dateCreation),

@@ -25,5 +25,14 @@ router.get("/operation/absences2",
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 AbsenceController.ListerabsenceOperation2);
+
+router.get("/operation/task", 
+passport.authenticate("jwt", { session: false }),
+//inRole(ROLES.RRH),
+AbsenceController.ListerTaskOperation);
+router.post("/operation/task/add", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+AbsenceController.addTaskOperation);
 module.exports = router;
 

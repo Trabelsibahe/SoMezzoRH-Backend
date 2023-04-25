@@ -4,6 +4,7 @@ const ValidatePasswordChange = require("../validators/PasswordChange");
 const ProfileModel = require('../models/profile');
 const UserModel = require("../models/user");
 const AbsenceModel = require("../models/absence");
+const TaskModel = require("../models/task");
 
 
 // Lister les employés ayant la même opération que moi (seulement pour L'RRH)
@@ -93,9 +94,80 @@ const ListerabsenceOperation2 = async (req, res) => {
 }
 
 
+const ListerTaskOperation = async (req, res) => {
 
+    try {
+        const CurrentUser = await UserModel.findById(req.user.id);
+        const TaskList = await TaskModel.find().populate('user', ["operation"]);
+        const UserList = await UserModel.find({
+            operation: CurrentUser.operation
+        });
+        const matchedtask = [];
 
+        for (let i = 0; i < TaskList.length; i++) {
+            for (let j = 0; j < UserList.length; j++) {
+                if (TaskList[i].user && TaskList[i].user.equals(UserList[j]._id)) {
+                    matchedtask.push(TaskList[i]);
+                }
+            }
+        }
+
+        res.status(200).json(matchedtask);
+
+    } catch (error) {
+        res.status(404).json(error.message)
+    }
+}
+const addTaskOperation = async (req, res) => {
+    try {
+      const CurrentUser = await UserModel.findById(req.user.id);
+      const TaskList = await TaskModel.find().populate("user", [
+        "matricule",
+        "role",
+        "nom",
+        "prenom",
+        "operation",
+        "titre",
+        "active",
+      ]);
+      const UserList = await UserModel.find({
+        operation: CurrentUser.operation,
+      });
+  
+      // Ajouter une nouvelle tâche
+      if (req.method === "POST") {
+        const { titre, description, dateCreation, dateSuppression, priorite } = req.body;
+  
+        const newTask = new TaskModel({
+          titre,
+          description,
+          dateCreation: new Date(dateCreation),
+          dateSuppression: new Date(dateSuppression),
+          priorite,
+          user: req.user.id,
+        });
+  
+        const createdTask = await newTask.save();
+        return res.status(200).json({
+          message: "Votre tâche a été créée avec succès !",
+          task: createdTask,
+        });
+      }
+  
+      // Récupérer la liste des tâches pour l'utilisateur connecté
+      const matchedtask = TaskList.filter((task) =>
+        task.user && task.user.operation === CurrentUser.operation
+      );
+  
+      res.status(200).json(matchedtask);
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
+  
 module.exports = {
+    addTaskOperation,
+    ListerTaskOperation,
     ListerOperation,
     ListerabsenceOperation,
     ListerabsenceOperation2,
