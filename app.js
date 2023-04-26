@@ -11,6 +11,8 @@ const newsletterRoute= require ("./routes/newsletter");
 const absenceRoute = require ("./routes/absence");
 const operationRoute = require ("./routes/operation");
 const taskRoute = require("./routes/task");
+const demandeRoute = require("./routes/demande");
+
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
@@ -31,10 +33,12 @@ app.use("/api", profileRoute);
 app.use('/uploadsavatar', express.static('./uploadsavatar'))
 //static justification  Folder
 app.use('/uploadsjustif', express.static('./uploadsjustif'))
-
+//static attestation  Folder
+app.use('/uploadsattestation', express.static('./uploadsattestation'))
 // archive
 app.use("/api", archiveRoute);
-
+// demande
+app.use("/api", demandeRoute);
 // absence
 app.use("/api", absenceRoute);
 
