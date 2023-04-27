@@ -92,23 +92,24 @@ const FindDemande = async (req, res) => {
   }
   const ajouterimage = async (req, res) => {
     const demandeId = req.params.id;
-    const attestation = req.file; // le fichier d'attestation à partir de la requête multipart
+    const attestation = req.file;
     try {
       const demande = await DemandeModel.findById(demandeId);
       if (!demande) {
         res.status(404).json({ message: "La demande spécifiée n'existe pas" });
       } else {
         if (attestation) {
-          demande.attestation = attestation.path; // sauvegarder le chemin d'accès du fichier
+          demande.attestation = attestation.path;
         }
+        demande.etat = 'traiter'; // modification de l'état de la demande
         await demande.save();
         res.status(200).json({ message: "La demande a été modifiée avec succès", demande });
       }
     } catch (error) {
       res.status(500).json({ message: "Une erreur est survenue lors de la modification de la demande", error });
     }
-  };
-  
+};
+
 module.exports = {
     ajouterimage,
     FindDemande,
