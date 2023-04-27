@@ -37,7 +37,7 @@ const listerTask = async (req ,res)=>{
 }
 const supprimerTask = (req, res) => {
     const dateActuelle = new Date();
-    const dateSuppression = new Date(dateActuelle.getTime() - 24 * 60 * 60 * 1000); // soustraire 24 heures
+    const dateSuppression = new Date(dateActuelle.getTime() - 23 * 60 * 60 * 1000); // soustraire 24 heures
     TaskModel.find({ dateSuppression: { $lt: dateSuppression } }, (err, tasks) => {
         if (err) {
             console.error(err);
