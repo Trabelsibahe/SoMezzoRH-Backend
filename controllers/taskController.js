@@ -36,25 +36,28 @@ const listerTask = async (req ,res)=>{
     }
 }
 const supprimerTask = (req, res) => {
-    const dateActuelle = new Date()
-    TaskModel.find({ dateSuppression: { $lte: dateActuelle } }, (err, tasks) => {
+    const dateActuelle = new Date();
+    const dateSuppression = new Date(dateActuelle.getTime() - 24 * 60 * 60 * 1000); // soustraire 24 heures
+    TaskModel.find({ dateSuppression: { $lt: dateSuppression } }, (err, tasks) => {
         if (err) {
-            console.error(err)
+            console.error(err);
             if (res) {
-                return res.status(500).json({ error: 'Erreur serveur' })
+                return res.status(500).json({ error: 'Erreur serveur' });
             }
         } else {
             tasks.forEach((item) => {
-                item.remove()
-            })
-            console.log(`task supprimées : ${tasks.length}`)
+                item.remove();
+            });
             if (res) {
-                return res.status(200).json({ message: `task supprimées : ${tasks.length}` })
+                return res.status(200).json({ message: `tasks supprimées : ${tasks.length}` });
             }
         }
-    })
-}
-setInterval(supprimerTask, 60 * 60 * 1000) 
+    });
+};
+
+setInterval(supprimerTask, 60 * 60 * 1000);
+
+
 module.exports = {
     supprimerTask,
     ajouterTask,
