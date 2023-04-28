@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const AbsenceController = require('../controllers/operationController');
+const OperationController = require('../controllers/operationController');
 const passport = require("passport");
 const { ROLES, inRole } = require("../security/Rolemiddleware");
 const multer = require('multer')
@@ -13,26 +13,28 @@ const multer = require('multer')
 router.get("/operation", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-AbsenceController.ListerOperation);
+OperationController.ListerOperation);
 
 router.get("/operation/absence", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-AbsenceController.ListerabsenceOperation);
+OperationController.ListerabsenceOperation);
 
 
 router.get("/operation/absences2", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-AbsenceController.ListerabsenceOperation2);
+OperationController.ListerabsenceOperation2);
 
-router.get("/operation/task", 
+router.get("/operation/mytasks", 
 passport.authenticate("jwt", { session: false }),
-//inRole(ROLES.RRH),
-AbsenceController.ListerTaskOperation);
+inRole(ROLES.RRH, ROLES.EMP),
+OperationController.ListerTaskOperation);
+
+
 router.post("/operation/task/add", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-AbsenceController.addTaskOperation);
+OperationController.addTaskOperation);
 module.exports = router;
 

@@ -15,7 +15,7 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 taskController.listerTask);
 
-router.get("/getall/task", 
+router.get("/alltasks", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 taskController.listerTask);
