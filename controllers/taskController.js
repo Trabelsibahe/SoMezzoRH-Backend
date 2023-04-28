@@ -27,14 +27,17 @@ const ajouterTask = (req, res) => {
         }
     })
 }}
+
+// lister tous les taches pour l'Expert RH
 const listerTask = async (req ,res)=>{
     try {
-        const data =  await TaskModel.find()
+        const data =  await TaskModel.find().populate('user', ["operation"]);
         res.status(200).json(data)
     } catch (error) {
         res.status(404).json(error.message)
     }
 }
+
 const supprimerTask = (req, res) => {
     const dateActuelle = new Date();
     const dateSuppression = new Date(dateActuelle.getTime() - 23 * 60 * 60 * 1000); // soustraire 24 heures
