@@ -12,6 +12,7 @@ const absenceRoute = require ("./routes/absence");
 const operationRoute = require ("./routes/operation");
 const taskRoute = require("./routes/task");
 const demandeRoute = require("./routes/demande");
+const notificationRoute = require("./routes/notification");
 
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
@@ -37,6 +38,8 @@ app.use('/uploadsjustif', express.static('./uploadsjustif'))
 app.use('/uploadsattestation', express.static('./uploadsattestation'))
 // archive
 app.use("/api", archiveRoute);
+// notification
+app.use("/api", notificationRoute);
 // demande
 app.use("/api", demandeRoute);
 // absence
