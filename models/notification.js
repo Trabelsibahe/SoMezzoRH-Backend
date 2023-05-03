@@ -4,16 +4,18 @@ const Schema = mongoose.Schema;
 const Notification = new Schema(
   {
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "users",
-        required: true
-      },
+      type: Schema.Types.ObjectId,
+      ref: "users",
+      required: true
+    },
     message: "string",
-    lire: Boolean,
+
+    read: Boolean,
+    default: false
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("notification", Notification);
+module.exports = mongoose.model("notifications", Notification);
