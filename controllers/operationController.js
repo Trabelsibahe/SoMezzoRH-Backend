@@ -35,18 +35,17 @@ const ListerOperation = async (req, res) => {
     }
 }
 
-// lister les absences des employés ayant la meme operation que moi ((fonction hedhi l9dima hotha fel archive Rrh_AbsArch.jsx))
+// lister les absences seulement du employés (role = EMP) ayant la meme operation que moi
 const ListerabsenceOperation = async (req, res) => {
 
     try {
         const CurrentUser = await UserModel.findById(req.user.id);
         const AbsenceList = await AbsenceModel.find().populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active"]);
         const UserList = await UserModel.find({
-            operation: CurrentUser.operation
+            operation: CurrentUser.operation,
+            role: "EMP"
         });
         const matchedAbsence = [];
-
-
         for (let i = 0; i < AbsenceList.length; i++) {
             for (let j = 0; j < UserList.length; j++) {
                 if (AbsenceList[i].user.equals(UserList[j]._id)) {
@@ -54,7 +53,7 @@ const ListerabsenceOperation = async (req, res) => {
                 }
             }
         }
-
+        
         res.status(200).json(matchedAbsence);
 
     } catch (error) {
@@ -62,7 +61,7 @@ const ListerabsenceOperation = async (req, res) => {
     }
 }
 
-// lister les absences avec etat = "En attente" ((fonction hedhi jdida hotha fel les demandes dabsences))
+// lister les absences avec etat = "En attente" ((fonction hedhi jdida hotha fel les demandes dabsences)) // not being used
 const ListerabsenceOperation2 = async (req, res) => {
 
     try {
