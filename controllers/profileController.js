@@ -2,6 +2,7 @@ const ProfileModel = require('../models/profile')
 const ValidateProfile = require("../validators/Profile")
 const UserModel = require('../models/user')
 const ArchiveModel = require('../models/archives')
+const NotificationModel = require("../models/notification")
 const multer = require('multer')
 const path = require('path')
 
@@ -86,7 +87,7 @@ const FindSingleProfile = async (req, res) => {
 //fonction modifier profile (CRUD)
 const modifierProfileById = async (req, res) => {
   const param = req.params.id;
-  const { user, ville, tel, pays, codepostal,email,gouvernorat,datenaiss,adresse } = req.body;
+  const { user, ville, tel, pays, codepostal, email, gouvernorat, datenaiss, adresse } = req.body;
 
   try {
     const modifierProfile = await ProfileModel.findById(param).populate('user');
@@ -114,13 +115,23 @@ const modifierProfileById = async (req, res) => {
     modifierProfile.datenaiss = datenaiss || modifierProfile.datenaiss;
     modifierProfile.adresse = adresse || modifierProfile.adresse;
 
-    await modifierProfile.save();
+    const updatedProfile = await modifierProfile.save();
 
-    res.status(200).json({ message: "Profile modifié avec succès", data: modifierProfile });
+    const notificationObj = {
+      user: modifierProfile.user._id, // Utiliser l'ID de l'utilisateur du profil modifié
+      message: "Votre profil a été modifié par l'expert.",
+      lire: false,
+    }
+    const notification = new NotificationModel(notificationObj);
+    await notification.save();
+
+    res.status(200).json({ message: "Profil modifié avec succès", data: updatedProfile });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
+
 //archive
 const deleteAndArchiveProfile = async (req, res) => {
   const id = req.params.id;
