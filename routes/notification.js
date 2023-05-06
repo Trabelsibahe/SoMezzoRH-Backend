@@ -16,4 +16,9 @@ router.get("/notifications",
 passport.authenticate("jwt", { session: false }),
 notificationController.FindNotifications);
 
+// get my notifications 
+router.get("/mynotification", 
+passport.authenticate("jwt", { session: false }),
+notificationController.getNotificationsByUserId);
+
 module.exports = router;

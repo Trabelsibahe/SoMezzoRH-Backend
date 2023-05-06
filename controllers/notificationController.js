@@ -38,8 +38,17 @@ const createNotification = async (req, res) => {
     return res.status(400).json({ errors: err.message });
   }
 };
-
+  const getNotificationsByUserId = async (req, res) => {
+    try {
+      const notifications = await NotificationModel.find({ user: req.user.id })
+      res.status(200).json(notifications)
+  
+    } catch (error) {
+      res.status(404).json(error.message)
+    }
+  }
 module.exports = {
+  getNotificationsByUserId,
   FindNotifications,
   createNotification,
 }
