@@ -84,8 +84,30 @@ const getNotificationsByUserId = async (req, res) => {
     }
   }
 
+  const SetNotificationRead  = async (req, res) => {
+    const notificationId = req.params.notificationId;
+
+    try {
+      const notification = await NotificationModel.findById(notificationId);
+  
+      if (!notification) {
+        return res.status(404).json({ message: "Notification non trouvée" });
+      }
+  
+      notification.read = true;
+      await notification.save();
+  
+      return res.status(200).json({
+        message: "La notification a été mise à jour avec succès",
+        notification,
+      });
+    } catch (err) {
+      return res.status(400).json({ errors: err.message });
+    }
+  };
   
 module.exports = {
+    SetNotificationRead,
   getNotificationsByUserId,
   FindNotifications,
   sendNotificationtoOneUser,
