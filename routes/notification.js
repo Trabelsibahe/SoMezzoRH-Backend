@@ -5,20 +5,28 @@ const passport = require("passport");
 const { ROLES, inRole } = require("../security/Rolemiddleware");
 
 
-//create notification 
+//Send notification to all
 router.post(
-    '/notification/create',
-    passport.authenticate('jwt', { session: false }),
-    notificationController.createNotification,
-  );
-// get my notifications 
-router.get("/notifications", 
-passport.authenticate("jwt", { session: false }),
-notificationController.FindNotifications);
+  '/notification/create',
+  passport.authenticate('jwt', { session: false }),
+  notificationController.sendNotificationToAll,
+);
+
+//Send notification to One User
+router.post(
+  '/notification/create/:userId',
+  passport.authenticate('jwt', { session: false }),
+  notificationController.sendNotificationtoOneUser,
+);
 
 // get my notifications 
-router.get("/mynotification", 
-passport.authenticate("jwt", { session: false }),
-notificationController.getNotificationsByUserId);
+router.get("/notifications",
+  passport.authenticate("jwt", { session: false }),
+  notificationController.FindNotifications);
+
+// get my notifications 
+router.get("/mynotification",
+  passport.authenticate("jwt", { session: false }),
+  notificationController.getNotificationsByUserId);
 
 module.exports = router;
