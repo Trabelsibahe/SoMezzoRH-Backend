@@ -8,10 +8,17 @@ const Notification = new Schema(
       ref: "users",
       required: true
     },
-    message: "string",
-
-    read: Boolean,
-    default: false
+    notifications: [
+      {
+        message: {
+          type: String,
+        },
+        read: {
+          type: Boolean,
+          default: false
+        }
+      }
+    ]
   },
   {
     timestamps: true,
