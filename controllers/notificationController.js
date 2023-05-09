@@ -18,14 +18,14 @@ const sendNotificationToAll = async (req, res) => {
       const notification = await NotificationModel.findOne({ user: user._id });
 
       if (!notification) {
-       
+
         const newNotification = new NotificationModel({
           user: user._id,
           notifications: [{ message, read: false }],
         });
         return await newNotification.save();
       } else {
-       
+
         notification.notifications.push({ message, read: false });
         return await notification.save();
       }
@@ -83,7 +83,7 @@ const sendNotificationtoOneUser = async (req, res) => {
   }
 };
 
-  
+
 // Afficher tous notification
 const FindNotifications = async (req, res) => {
   try {
@@ -96,41 +96,44 @@ const FindNotifications = async (req, res) => {
 }
 // Afficher mes notification
 const getNotificationsByUserId = async (req, res) => {
-    try {
-      const notifications = await NotificationModel.find({ user: req.user.id })
-      res.status(200).json(notifications)
-  
-    } catch (error) {
-      res.status(404).json(error.message)
-    }
+  try {
+    const notifications = await NotificationModel.find({ user: req.user.id })
+    res.status(200).json(notifications)
+
+  } catch (error) {
+    res.status(404).json(error.message)
   }
+}
 
 
-  // Marquer la notification comme lu
-  const SetNotificationRead  = async (req, res) => {
-    const notificationId = req.params.notificationId;
+// Marquer la notification comme lu
+const SetNotificationRead = async (req, res) => {
+  const notificationId = req.params.notificationId;
 
-    try {
-      const notification = await NotificationModel.findById(notificationId);
-  
-      if (!notification) {
-        return res.status(404).json({ message: "Notification non trouvée" });
-      }
-  
-      notification.read = true;
-      await notification.save();
-  
-      return res.status(200).json({
-        message: "La notification a été mise à jour avec succès",
-        notification,
-      });
-    } catch (err) {
-      return res.status(400).json({ errors: err.message });
+  try {
+    const notification = await NotificationModel.findOne({ "notification._id": notificationId });
+    if (!notification) {
+      return res.status(404).json({ message: "Notification non trouvée" });
     }
-  };
-  
+
+    notification.notifications.forEach(item => {
+      if (notificationId === item.id) {
+        item.read = true;
+        notification.save();
+      }
+    });
+
+    return res.status(200).json({
+      message: "La notification a été mise à jour avec succès",
+      notification,
+    });
+  } catch (err) {
+    return res.status(400).json({ errors: err.message });
+  }
+};
+
 module.exports = {
-    SetNotificationRead,
+  SetNotificationRead,
   getNotificationsByUserId,
   FindNotifications,
   sendNotificationtoOneUser,

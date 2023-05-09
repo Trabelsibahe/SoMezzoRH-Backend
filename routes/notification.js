@@ -28,7 +28,8 @@ router.get("/notifications",
 router.get("/mynotification",
   passport.authenticate("jwt", { session: false }),
   notificationController.getNotificationsByUserId);
-  // get my notifications 
+
+  // mark as read by id
 router.post("/setnotification/:notificationId",
 passport.authenticate("jwt", { session: false }),
 notificationController.SetNotificationRead);
