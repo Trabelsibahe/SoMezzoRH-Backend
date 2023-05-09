@@ -105,6 +105,8 @@ const getNotificationsByUserId = async (req, res) => {
     }
   }
 
+
+  // Marquer la notification comme lu
   const SetNotificationRead  = async (req, res) => {
     const notificationId = req.params.notificationId;
 
