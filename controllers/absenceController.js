@@ -94,7 +94,7 @@ const upload = multer({
 
 const modifierAbsence = async (req, res) => {
   const { id } = req.params;
-  const {  etat } = req.body;
+  const {  etat, motif } = req.body;
 
   try {
     const absence = await AbsenceModel.findOne({ "absences._id": id });
@@ -107,6 +107,8 @@ const modifierAbsence = async (req, res) => {
     );
 
     absence.absences[absenceIndex].etat = etat;
+    absence.absences[absenceIndex].motif = motif;
+
 
     await absence.save();
 
