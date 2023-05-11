@@ -2,17 +2,26 @@ const { query } = require('express');
 const NewsletterModel = require('../Models/newsletter');
 const multer = require('multer')
 const path = require('path')
+const ValidateNews = require("../validators/newsletter")
 
 //add newsletters
 const ajouterNews = (req, res) => {
+    const { errors, isValid } = ValidateNews(req.body, req.file);
+    const default_imgurl= {
+        fieldname: 'imgurl',
+      }
     const newsObj = {
         titre: req.body.titre,
         description: req.body.description,
         dateCreation: Date.now(),
         dateSuppression: new Date(req.body.dateSuppression),
-        imgurl: req.file.path,
-    }
+        imgurl: req.file ? req.file.path : default_imgurl,
 
+    }
+if(!isValid){
+    res.status(404).json(errors);
+}
+else{
     const newsletter = new NewsletterModel(newsObj)
 
     newsletter.save((error, createdNews) => {
@@ -21,27 +30,27 @@ const ajouterNews = (req, res) => {
             return res.status(200).json({ createdNews })
         }
     })
-}
+}}
 //delete newsletters avec date 
 const supprimerNews = (req, res) => {
-    const dateActuelle = new Date()
+    const dateActuelle = new Date();
     NewsletterModel.find({ dateSuppression: { $lte: dateActuelle } }, (err, news) => {
-        if (err) {
-            console.error(err)
-            if (res) {
-                return res.status(500).json({ error: 'Erreur serveur' })
-            }
-        } else {
-            news.forEach((item) => {
-                item.remove()
-            })
-            console.log(`News supprimées : ${news.length}`)
-            if (res) {
-                return res.status(200).json({ message: `News supprimées : ${news.length}` })
-            }
+      if (err) {
+        console.error(err);
+        if (res) {
+          return res.status(500).json({ error: 'Erreur serveur' });
         }
-    })
-}
+      } else {
+        news.forEach((item) => {
+          item.remove();
+        });
+        if (res) {
+          return res.status(200).json({ message: `News supprimées : ${news.length}` });
+        }
+      }
+    });
+  };
+  
 setInterval(supprimerNews, 60 * 60 * 1000) 
 //fonction lister des news 
 const listerNews = async (req ,res)=>{
