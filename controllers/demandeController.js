@@ -66,6 +66,7 @@ const FindAllDemande = async (req, res) => {
 const modifierDemande = async (req, res) => {
   const demandeId = req.params.id;
   const etat = req.body.etat;
+  const rdv = req.body.rdv;
   try {
     const demande = await DemandeModel.findById(demandeId);
     if (!demande) {
@@ -73,6 +74,7 @@ const modifierDemande = async (req, res) => {
     } else {
       // Mettre à jour l'état de la demande
       demande.etat = etat;
+      demande.rdv = rdv;
       await demande.save();
       res.status(200).json({ message: "La demande a été modifiée avec succès", demande });
     }
