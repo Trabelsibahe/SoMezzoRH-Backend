@@ -91,7 +91,7 @@ const upload = multer({
   }
 }).single('justif')
 
-
+// modifier une absence
 const modifierAbsence = async (req, res) => {
   const { id } = req.params;
   const {  etat, motif } = req.body;

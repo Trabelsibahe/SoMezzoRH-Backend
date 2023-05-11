@@ -19,7 +19,7 @@ router.post(
   notificationController.sendNotificationtoOneUser,
 );
 
-// get my notifications 
+// get all notifications 
 router.get("/notifications",
   passport.authenticate("jwt", { session: false }),
   notificationController.FindNotifications);

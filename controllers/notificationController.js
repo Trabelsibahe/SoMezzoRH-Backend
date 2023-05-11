@@ -2,7 +2,8 @@ const { query } = require('express');
 const NotificationModel = require('../models/notification');
 const UserModel = require('../models/user');
 const multer = require('multer')
-const path = require('path')
+const path = require('path');
+const notification = require('../models/notification');
 
 
 
@@ -111,21 +112,22 @@ const SetNotificationRead = async (req, res) => {
   const notificationId = req.params.notificationId;
 
   try {
-    const notification = await NotificationModel.findOne({ "notification._id": notificationId });
+    const notification = await NotificationModel.find({ user: req.user.id });
+    console.log(notification[0])
+  
     if (!notification) {
       return res.status(404).json({ message: "Notification non trouvée" });
     }
-
-    notification.notifications.forEach(item => {
+    
+    notification[0].notifications.forEach(item => {
       if (notificationId === item.id) {
         item.read = true;
-        notification.save();
+        notification[0].save();
       }
     });
 
     return res.status(200).json({
-      message: "La notification a été mise à jour avec succès",
-      notification,
+      message: "La notification a été mise à jour avec succès", notification,
     });
   } catch (err) {
     return res.status(400).json({ errors: err.message });
