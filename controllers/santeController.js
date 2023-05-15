@@ -9,7 +9,7 @@ const ajouterdemandeRdv = (req, res) => {
   const santeObj = {
     user: req.user._id,
     commentaire: req.body.commentaire,
-    etat: req.body.etat = "Réception",
+    etat: req.body.etat = "en attente",
   }
   if (!isValid) {
     res.status(404).json(errors);

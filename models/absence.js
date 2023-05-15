@@ -25,6 +25,8 @@ const Absence = new Schema(
           etat: String,
           justif : String,
           motif : String,
+          dateCreation: Date,
+
         }
       ]
     },
