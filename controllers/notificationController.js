@@ -113,12 +113,11 @@ const SetNotificationRead = async (req, res) => {
 
   try {
     const notification = await NotificationModel.find({ user: req.user.id });
-    console.log(notification[0])
-  
+
     if (!notification) {
       return res.status(404).json({ message: "Notification non trouvée" });
     }
-    
+
     notification[0].notifications.forEach(item => {
       if (notificationId === item.id) {
         item.read = true;
@@ -127,12 +126,14 @@ const SetNotificationRead = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "La notification a été mise à jour avec succès", notification,
+      message: "La notification a été mise à jour avec succès",
+      notification,
     });
   } catch (err) {
     return res.status(400).json({ errors: err.message });
   }
 };
+
 
 module.exports = {
   SetNotificationRead,
