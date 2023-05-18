@@ -23,6 +23,10 @@ router.post(
 router.get("/notifications",
   passport.authenticate("jwt", { session: false }), inRole(ROLES.EXPERT),
   notificationController.FindNotifications);
+// get all notifications 
+router.post("/journal/expert",
+  passport.authenticate("jwt", { session: false }),
+  notificationController.sendNotificationToExperts);
 
 // get my notifications 
 router.get("/mynotification",

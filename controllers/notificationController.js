@@ -137,7 +137,41 @@ const SetNotificationRead = async (req, res) => {
 };
 
 
+//Evoyer journal to expert
+const sendNotificationToExperts = async (req, res) => {
+  const { journal } = req.body;
+
+  try {
+    const expertUsers = await UserModel.find({ role: "EXPERT" });
+
+    const notifications = expertUsers.map(async (user) => {
+      const notification = await NotificationModel.findOne({ user: user._id });
+
+      if (!notification) {
+        const newNotification = new NotificationModel({
+          user: user._id,
+          notifications: [{ journal, creationDate: Date.now(), read: false }],
+        });
+        return await newNotification.save();
+      } else {
+        notification.notifications.push({ journal, creationDate: Date.now(), read: false });
+        return await notification.save();
+      }
+    });
+
+    const createdNotifications = await Promise.all(notifications);
+
+    return res.status(200).json({
+      message: "Le journal a été envoyé avec succès aux utilisateurs experts !",
+      createdNotifications,
+    });
+  } catch (err) {
+    return res.status(400).json({ errors: err.message });
+  }
+};
+
 module.exports = {
+  sendNotificationToExperts,
   SetNotificationRead,
   getNotificationsByUserId,
   FindNotifications,
