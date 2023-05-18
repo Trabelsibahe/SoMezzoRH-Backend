@@ -115,11 +115,7 @@ const SetNotificationRead = async (req, res) => {
 
   try {
     const notification = await NotificationModel.find({ user: req.user.id });
-<<<<<<< HEAD
   
-=======
-
->>>>>>> 81499321d523860aa8b55048aa936695337c1713
     if (!notification) {
       return res.status(404).json({ message: "Notification non trouvée" });
     }
