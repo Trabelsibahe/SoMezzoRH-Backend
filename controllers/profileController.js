@@ -149,11 +149,9 @@ const deleteAndArchiveProfile = async (req, res) => {
 
     // Créer un nouveau document dans la collection "Archive" avec les données à archiver
     const newArchiveDoc = await ArchiveModel.create(archiveData);
-    console.log(`Le document d'archives avec l'ID ${newArchiveDoc._id} a été créé`);
 
     // Supprimer le document de la collection "Profile"
     await profileToDelete.remove();
-    console.log(`Le document avec l'ID ${id} a été supprimé de la collection "Profile"`);
 
     // Renvoyer une réponse réussie
     res.status(200).json({ message: `Le document avec l'ID ${id} a été supprimé de la collection "Profile"` });

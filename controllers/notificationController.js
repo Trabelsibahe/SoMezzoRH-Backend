@@ -10,7 +10,7 @@ const notification = require('../models/notification');
 
 // Envoyer une notification à tous
 const sendNotificationToAll = async (req, res) => {
-  const { message } = req.body;
+  const { message, journal } = req.body;
 
   try {
     const users = await UserModel.find();
@@ -22,12 +22,12 @@ const sendNotificationToAll = async (req, res) => {
 
         const newNotification = new NotificationModel({
           user: user._id,
-          notifications: [{ message, read: false }],
+          notifications: [{ message, journal, creationDate: Date.now(), read: false }],
         });
         return await newNotification.save();
       } else {
 
-        notification.notifications.push({ message, read: false });
+        notification.notifications.push({message, journal, creationDate: Date.now(), read: false});
         return await notification.save();
       }
     });
@@ -47,7 +47,7 @@ const sendNotificationToAll = async (req, res) => {
 
 // Envoyer une notification à une utilisateur specifique
 const sendNotificationtoOneUser = async (req, res) => {
-  const { message } = req.body;
+  const { message, journal } = req.body;
   const userId = req.params.userId;
 
   try {
@@ -59,6 +59,8 @@ const sendNotificationtoOneUser = async (req, res) => {
 
     const notificationObj = {
       message,
+      journal,
+      creationDate: Date.now(),
       read: false,
     };
 
@@ -85,10 +87,10 @@ const sendNotificationtoOneUser = async (req, res) => {
 };
 
 
-// Afficher tous notification
+// Afficher tous les notification (expert)
 const FindNotifications = async (req, res) => {
   try {
-    const data = await NotificationModel.find({ userId: req.user._id });
+    const data = await NotificationModel.find({ userId: req.user._id }).populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active"]);
     res.status(200).json(data)
 
   } catch (error) {
@@ -113,7 +115,6 @@ const SetNotificationRead = async (req, res) => {
 
   try {
     const notification = await NotificationModel.find({ user: req.user.id });
-    console.log(notification[0])
   
     if (!notification) {
       return res.status(404).json({ message: "Notification non trouvée" });

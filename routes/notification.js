@@ -21,7 +21,7 @@ router.post(
 
 // get all notifications 
 router.get("/notifications",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", { session: false }), inRole(ROLES.EXPERT),
   notificationController.FindNotifications);
 
 // get my notifications 

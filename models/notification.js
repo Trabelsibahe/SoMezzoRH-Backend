@@ -10,13 +10,13 @@ const Notification = new Schema(
     },
     notifications: [
       {
-        message: {
-          type: String,
-        },
+        message: String,
+        journal : String,
+        creationDate: Date,
         read: {
           type: Boolean,
           default: false
-        }
+        },
       }
     ]
   },
