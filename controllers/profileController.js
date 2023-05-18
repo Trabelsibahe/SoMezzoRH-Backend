@@ -125,13 +125,11 @@ const modifierProfileById = async (req, res) => {
 const deleteAndArchiveProfile = async (req, res) => {
   const id = req.params.id;
   try {
-    // Trouver le document à supprimer dans la collection "Profile"
     const profileToDelete = await ProfileModel.findById(id);
     if (!profileToDelete) {
       throw new Error(`Aucun document avec l'ID ${id} trouvé dans la collection "Profile"`);
     }
 
-    // Copier les données à archiver dans un nouvel objet
     const archiveData = {
       user: profileToDelete.user,
       tel: profileToDelete.tel,
@@ -147,19 +145,17 @@ const deleteAndArchiveProfile = async (req, res) => {
       updatedAt: profileToDelete.updatedAt,
     };
 
-    // Créer un nouveau document dans la collection "Archive" avec les données à archiver
     const newArchiveDoc = await ArchiveModel.create(archiveData);
 
-    // Supprimer le document de la collection "Profile"
     await profileToDelete.remove();
 
-    // Renvoyer une réponse réussie
     res.status(200).json({ message: `Le document avec l'ID ${id} a été supprimé de la collection "Profile"` });
   } catch (error) {
     console.error(`Une erreur s'est produite : ${error.message}`);
     res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
   }
 }
+
 
 //fonction modifier profile connecter 
 const modifierprofile = async (req, res) => {

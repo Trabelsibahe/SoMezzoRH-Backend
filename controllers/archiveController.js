@@ -15,6 +15,7 @@ const FindArchive = async (req ,res)=>{
 }
 //delete archive to profile
 const deleteArchive = async (req, res) => {
+<<<<<<< HEAD
     const id = req.params.id;
     try {
       // Trouver le document à supprimer dans la collection "Profile"
@@ -50,8 +51,41 @@ const deleteArchive = async (req, res) => {
     } catch (error) {
       console.error(`Une erreur s'est produite : ${error.message}`);
       res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
+=======
+  const id = req.params.id;
+  try {
+    const archiveToDelete = await ArchiveModel.findById(id);
+    if (!archiveToDelete) {
+      throw new Error(`Aucun document avec l'ID ${id} trouvé dans la collection "archive"`);
+>>>>>>> 81499321d523860aa8b55048aa936695337c1713
     }
+    
+    const profileData = {
+      user: archiveToDelete.user,
+      tel: archiveToDelete.tel,
+      ville: archiveToDelete.ville,
+      pays: archiveToDelete.pays,
+      codepostal: archiveToDelete.codepostal,
+      email: archiveToDelete.email,
+      datenaiss: archiveToDelete.datenaiss,
+      gouvernorat: archiveToDelete.gouvernorat,
+      avatar:archiveToDelete.avatar,
+      adresse: archiveToDelete.adresse,
+      createdAt: archiveToDelete.createdAt,
+      updatedAt: archiveToDelete.updatedAt,
+    };
+    
+    const newProfileDoc = await ProfileModel.create(profileData);
+    
+    await archiveToDelete.remove();
+    
+    res.status(200).json({ message: `Le document avec l'ID ${id} a été supprimé de la collection "Profile"` });
+  } catch (error) {
+    console.error(`Une erreur s'est produite : ${error.message}`);
+    res.status(500).json({ message: 'Une erreur s\'est produite lors de la suppression et de l\'archivage du document.' });
   }
+};
+
 //counter les archives
 const countArchives = async (req, res) => {
   try {
