@@ -5,6 +5,7 @@ const ProfileModel = require('../models/profile');
 const UserModel = require("../models/user");
 const AbsenceModel = require("../models/absence");
 const ChallengesModel = require("../models/Challenges");
+const ValidateChallenge = require("../validators/Challenges")
 
 
 // Lister les employés ayant la même opération que moi (seulement pour L'RRH)
@@ -119,6 +120,10 @@ const ListerChallengesOperation = async (req, res) => {
 }
 
 const addChallengeOperation = async (req, res) => {
+    const { errors, isValid } = ValidateChallenge(req.body);
+    if (!isValid) {
+        res.status(404).json(errors);
+      } else {
     try {
       const CurrentUser = await UserModel.findById(req.user.id);
       const ChallengeList = await ChallengesModel.find().populate("user", [
@@ -155,7 +160,7 @@ const addChallengeOperation = async (req, res) => {
       }
   
       // Récupérer la liste des tâches pour l'utilisateur connecté
-      const matchedChallenges = ChallengesList.filter((Challenges) =>
+      const matchedChallenges = ChallengeList.filter((Challenges) =>
       Challenges.user && Challenges.user.operation === CurrentUser.operation
       );
   
@@ -163,7 +168,7 @@ const addChallengeOperation = async (req, res) => {
     } catch (error) {
       res.status(404).json(error.message);
     }
-  };
+  }};
   
 module.exports = {
     addChallengeOperation,
