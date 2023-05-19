@@ -10,7 +10,7 @@ const archiveRoute= require ("./routes/archive")
 const newsletterRoute= require ("./routes/newsletter");
 const absenceRoute = require ("./routes/absence");
 const operationRoute = require ("./routes/operation");
-const taskRoute = require("./routes/task");
+const ChallengeRoute = require("./routes/Challenges");
 const demandeRoute = require("./routes/demande");
 const notificationRoute = require("./routes/notification");
 const santeRoute = require("./routes/sante");
@@ -54,8 +54,8 @@ app.use("/api", newsletterRoute);
 // operation
 app.use("/api", operationRoute );
 
-// task
-app.use("/api", taskRoute );
+// Challenges
+app.use("/api", ChallengeRoute );
 
 //register login
 app.use("/api", userRoute);

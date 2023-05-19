@@ -1,7 +1,7 @@
 const isEmpty = require("./isEmpty");
 const validator = require("validator");
 
-module.exports = function ValidateTask(data) {
+module.exports = function ValidateChallenge(data) {
   let errors = {};
 
   data.titre = !isEmpty(data.titre) ? data.titre : "";

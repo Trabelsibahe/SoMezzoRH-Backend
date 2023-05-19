@@ -26,15 +26,15 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 OperationController.ListerabsenceOperation2);
 
-router.get("/operation/mytasks", 
+router.get("/operation/myChallenge", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH, ROLES.EMP),
-OperationController.ListerTaskOperation);
+OperationController.ListerChallengesOperation);
 
 
-router.post("/operation/task/add", 
+router.post("/operation/Challenge/add", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-OperationController.addTaskOperation);
+OperationController.addChallengeOperation);
 module.exports = router;
 

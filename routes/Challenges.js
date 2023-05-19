@@ -1,29 +1,29 @@
 const express = require('express');
 const router = express.Router();
-const taskController = require('../controllers/taskController');
+const ChallengesController = require('../controllers/ChallengesController');
 const passport = require("passport");
 const { ROLES, inRole } = require("../security/Rolemiddleware");
 
 
-router.post("/add/task", 
+router.post("/add/Challenge", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-taskController.ajouterTask);
+ChallengesController.ajouterChallenge);
 
-router.get("/get/task", 
+router.get("/get/Challenge", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-taskController.listerTask);
+ChallengesController.listerChallenge);
 
-router.get("/alltasks", 
+router.get("/allChallenges", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
-taskController.listerTask);
+ChallengesController.listerChallenge);
 
-router.delete("/task/supp", 
+router.delete("/Challenge/supp", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
-taskController.supprimerTask);
+ChallengesController.supprimerChallenge);
 
 
 module.exports = router;

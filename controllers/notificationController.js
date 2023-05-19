@@ -150,11 +150,11 @@ const sendNotificationToExperts = async (req, res) => {
       if (!notification) {
         const newNotification = new NotificationModel({
           user: user._id,
-          notifications: [{ journal, creationDate: Date.now(), read: false }],
+          notifications: [{ journal, creationDate: Date.now(), read: true }],
         });
         return await newNotification.save();
       } else {
-        notification.notifications.push({ journal, creationDate: Date.now(), read: false });
+        notification.notifications.push({ journal, creationDate: Date.now(), read: true });
         return await notification.save();
       }
     });

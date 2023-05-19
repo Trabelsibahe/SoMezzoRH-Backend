@@ -4,7 +4,7 @@ const ValidatePasswordChange = require("../validators/PasswordChange");
 const ProfileModel = require('../models/profile');
 const UserModel = require("../models/user");
 const AbsenceModel = require("../models/absence");
-const TaskModel = require("../models/task");
+const ChallengesModel = require("../models/Challenges");
 
 
 // Lister les employés ayant la même opération que moi (seulement pour L'RRH)
@@ -93,35 +93,35 @@ const ListerabsenceOperation2 = async (req, res) => {
 }
 
 
-const ListerTaskOperation = async (req, res) => {
+const ListerChallengesOperation = async (req, res) => {
 
     try {
         const CurrentUser = await UserModel.findById(req.user.id);
-        const TaskList = await TaskModel.find().populate('user', ["operation"]);
+        const ChallengeList = await ChallengesModel.find().populate('user', ["operation"]);
         const UserList = await UserModel.find({
             operation: CurrentUser.operation
         });
-        const matchedtask = [];
+        const matchedChallenge = [];
 
-        for (let i = 0; i < TaskList.length; i++) {
+        for (let i = 0; i < ChallengeList.length; i++) {
             for (let j = 0; j < UserList.length; j++) {
-                if (TaskList[i].user && TaskList[i].user.equals(UserList[j]._id)) {
-                    matchedtask.push(TaskList[i]);
+                if (ChallengeList[i].user && ChallengeList[i].user.equals(UserList[j]._id)) {
+                    matchedChallenge.push(ChallengeList[i]);
                 }
             }
         }
 
-        res.status(200).json(matchedtask);
+        res.status(200).json(matchedChallenge);
 
     } catch (error) {
         res.status(404).json(error.message)
     }
 }
 
-const addTaskOperation = async (req, res) => {
+const addChallengeOperation = async (req, res) => {
     try {
       const CurrentUser = await UserModel.findById(req.user.id);
-      const TaskList = await TaskModel.find().populate("user", [
+      const ChallengeList = await ChallengesModel.find().populate("user", [
         "matricule",
         "role",
         "nom",
@@ -138,7 +138,7 @@ const addTaskOperation = async (req, res) => {
       if (req.method === "POST") {
         const { titre, description, dateCreation, dateSuppression, priorite } = req.body;
   
-        const newTask = new TaskModel({
+        const newChallenges = new ChallengesModel({
           titre,
           description,
           dateCreation: new Date(dateCreation),
@@ -147,27 +147,27 @@ const addTaskOperation = async (req, res) => {
           user: req.user.id,
         });
   
-        const createdTask = await newTask.save();
+        const createdChallenges = await newChallenges.save();
         return res.status(200).json({
           message: "Votre tâche a été créée avec succès !",
-          task: createdTask,
+          Challenges: createdChallenges,
         });
       }
   
       // Récupérer la liste des tâches pour l'utilisateur connecté
-      const matchedtask = TaskList.filter((task) =>
-        task.user && task.user.operation === CurrentUser.operation
+      const matchedChallenges = ChallengesList.filter((Challenges) =>
+      Challenges.user && Challenges.user.operation === CurrentUser.operation
       );
   
-      res.status(200).json(matchedtask);
+      res.status(200).json(matchedChallenges);
     } catch (error) {
       res.status(404).json(error.message);
     }
   };
   
 module.exports = {
-    addTaskOperation,
-    ListerTaskOperation,
+    addChallengeOperation,
+    ListerChallengesOperation,
     ListerOperation,
     ListerabsenceOperation,
     ListerabsenceOperation2,

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Task = new Schema(
+const Challenge = new Schema(
   {
     user: {
         type: Schema.Types.ObjectId,
@@ -19,4 +19,4 @@ const Task = new Schema(
   }
 );
 
-module.exports = mongoose.model("task", Task);
+module.exports = mongoose.model("challenge", Challenge);
