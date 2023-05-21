@@ -98,26 +98,30 @@ const ListerChallengesOperation = async (req, res) => {
 
     try {
         const CurrentUser = await UserModel.findById(req.user.id);
-        const ChallengeList = await ChallengesModel.find().populate('user', ["operation"]);
+        const ChallengeList = await ChallengesModel.find()
+          .populate("user", ["matricule"])
+          .populate("participantsIds.user", ["matricule","nom","prenom"]);
+    
         const UserList = await UserModel.find({
-            operation: CurrentUser.operation
+          operation: CurrentUser.operation
         });
-        const matchedChallenge = [];
-
+    
+        const matchedChallenges = [];
+    
         for (let i = 0; i < ChallengeList.length; i++) {
-            for (let j = 0; j < UserList.length; j++) {
-                if (ChallengeList[i].user && ChallengeList[i].user.equals(UserList[j]._id)) {
-                    matchedChallenge.push(ChallengeList[i]);
-                }
+          for (let j = 0; j < UserList.length; j++) {
+            if (ChallengeList[i].user && ChallengeList[i].user.equals(UserList[j]._id)) {
+              matchedChallenges.push(ChallengeList[i]);
             }
+          }
         }
-
-        res.status(200).json(matchedChallenge);
-
-    } catch (error) {
-        res.status(404).json(error.message)
-    }
-}
+    
+        res.status(200).json(matchedChallenges);
+      } catch (error) {
+        res.status(404).json(error.message);
+      }
+    };
+    
 
 const addChallengeOperation = async (req, res) => {
     const { errors, isValid } = ValidateChallenge(req.body);
@@ -169,13 +173,118 @@ const addChallengeOperation = async (req, res) => {
       res.status(404).json(error.message);
     }
   }};
+
+  const participerChallenge = async (req, res) => {
+    try {
+      const CurrentUser = await UserModel.findById(req.user.id);
+      const ChallengeList = await ChallengesModel.find().populate("user", [
+        "matricule",
+        "role",
+        "nom",
+        "prenom",
+        "operation",
+        "titre",
+        "active",
+      ]);
+      const UserList = await UserModel.find({
+        operation: CurrentUser.operation,
+      });
+  
+      // Participer à un challenge
+      if (req.method === "POST" && req.body.participer === "oui") {
+        const { participer } = req.body;
+        const challengeId = req.params.id;
+  
+        // Trouver le challenge correspondant
+        const challenge = ChallengeList.find(
+          (challenge) => challenge._id.toString() === challengeId
+        );
+  
+        // Vérifier si le challenge existe
+        if (!challenge) {
+          return res.status(404).json({ message: "Challenge introuvable" });
+        }
+  
+        // Incrémenter le champ "participants" du challenge
+        challenge.participants += 1;
+  
+        // Vérifier si l'utilisateur a déjà participé au challenge
+        const userParticipation = challenge.participantsIds.find(
+          (participant) => participant.user.toString() === CurrentUser._id.toString()
+        );
+  
+        if (userParticipation) {
+          // Si l'utilisateur a déjà participé, incrémenter le nombre de participations
+          userParticipation.participations += 1;
+        } else {
+          // Si l'utilisateur n'a pas encore participé, ajouter une nouvelle entrée avec le nombre de participations initialisé à 1
+          challenge.participantsIds.push({
+            user: CurrentUser._id,
+            participations: 1
+          });
+        }
+  
+        await challenge.save();
+  
+        return res.status(200).json({
+          message: "Vous avez participé au challenge !",
+        });
+      }
+  
+      // Récupérer la liste des challenges pour l'utilisateur connecté
+      const matchedChallenges = ChallengeList.filter(
+        (challenge) =>
+          challenge.user && challenge.user.operation === CurrentUser.operation
+      );
+  
+      res.status(200).json(matchedChallenges);
+    } catch (error) {
+      res.status(500).json({ message: "Erreur lors de la participation au challenge" });
+    }
+  };
+  
+
+  const ListerOperationparticiper = async (req, res) => {
+    try {
+      const CurrentUser = await UserModel.findById(req.user.id);
+      const ChallengeList = await ChallengesModel.find()
+        .populate("user", ["matricule"])
+        .populate("participantsIds.user", ["matricule"]);
+  
+      const UserList = await UserModel.find({
+        operation: CurrentUser.operation
+      });
+  
+      const matchedChallenges = [];
+  
+      for (let i = 0; i < ChallengeList.length; i++) {
+        for (let j = 0; j < UserList.length; j++) {
+          if (ChallengeList[i].user && ChallengeList[i].user.equals(UserList[j]._id)) {
+            matchedChallenges.push(ChallengeList[i]);
+          }
+        }
+      }
+  
+      res.status(200).json(matchedChallenges);
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
+  
+  
+  
+  
+  
+  
   
 module.exports = {
+    ListerOperationparticiper,
     addChallengeOperation,
     ListerChallengesOperation,
     ListerOperation,
     ListerabsenceOperation,
     ListerabsenceOperation2,
+    participerChallenge,
 
 };
 

@@ -14,7 +14,8 @@ const User = new Schema(
     role: "string",
     operation: "string",
     titre : "string",
-    active : "Boolean"
+    active : "Boolean",
+   
   },
   {
     timestamps: true,

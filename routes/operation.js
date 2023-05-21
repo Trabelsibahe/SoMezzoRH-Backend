@@ -31,10 +31,20 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH, ROLES.EMP),
 OperationController.ListerChallengesOperation);
 
+router.get("/operation/participants/:id", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+OperationController.ListerOperationparticiper);
+
 
 router.post("/operation/Challenge/add", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 OperationController.addChallengeOperation);
+router.post(
+    "/participer/:id",
+    passport.authenticate("jwt", { session: false }),
+    OperationController.participerChallenge
+  );
 module.exports = router;
 
