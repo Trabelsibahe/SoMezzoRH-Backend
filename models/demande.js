@@ -12,7 +12,6 @@ const Demande = new Schema(
     commentaire: "string",
     etat: "string",
     attestation:"string",
-    rdv : Date,
   },
   {
     timestamps: true,
