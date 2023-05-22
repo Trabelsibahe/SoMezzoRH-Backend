@@ -97,6 +97,7 @@ const FindNotifications = async (req, res) => {
     res.status(404).json(error.message);
   }
 }
+
 // Afficher mes notification
 const getNotificationsByUserId = async (req, res) => {
   try {
@@ -137,7 +138,7 @@ const SetNotificationRead = async (req, res) => {
 };
 
 
-//Evoyer journal to expert
+//Envoyer le journal au expert RH
 const sendNotificationToExperts = async (req, res) => {
   const { journal } = req.body;
 
