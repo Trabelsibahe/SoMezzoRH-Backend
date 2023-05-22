@@ -29,15 +29,16 @@ const ajouterChallenge = (req, res) => {
 }}
 
 // lister tous les challenge pour l'Expert RH
-const listerChallenge = async (req ,res)=>{
+const listerChallenge = async (req, res) => {
     try {
-        const data =  await ChallengeModel.find().populate('user', ["operation"]);
-        res.status(200).json(data)
+        const ChallengeList = await ChallengeModel.find()
+            .populate("user", ["matricule","operation"])
+            .populate("participantsIds.user", ["matricule", "nom", "prenom"]);
+        res.status(200).json(ChallengeList);
     } catch (error) {
-        res.status(404).json(error.message)
+        res.status(404).json(error.message);
     }
 }
-
 const supprimerChallenge = (req, res) => {
     const dateActuelle = new Date();
     const dateSuppression = new Date(dateActuelle.getTime() - 23 * 60 * 60 * 1000); // soustraire 24 heures
