@@ -60,9 +60,19 @@ const supprimerChallenge = (req, res) => {
 };
 
 setInterval(supprimerChallenge, 60 * 60 * 1000);
-
+//counter les challenge
+const countChallenge = async (req, res) => {
+    try {
+      const count = await ChallengeModel.countDocuments();
+      res.status(200).json({ count });
+  
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
 
 module.exports = {
+    countChallenge,
     supprimerChallenge,
     ajouterChallenge,
     listerChallenge

@@ -50,7 +50,6 @@ ProfileController.deleteAndArchiveProfile);
 /* counter profiles */
 router.get("/nb/profiles", 
 passport.authenticate("jwt", { session: false }),
-inRole(ROLES.EXPERT),
 ProfileController.countProfiles);
 
 module.exports = router;

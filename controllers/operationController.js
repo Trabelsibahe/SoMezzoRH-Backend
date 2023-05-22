@@ -272,12 +272,56 @@ const addChallengeOperation = async (req, res) => {
   };
   
   
+  //counter les operation
+const countOperation = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    const operationSet = new Set();
+
+    for (let i = 0; i < users.length; i++) {
+      operationSet.add(users[i].operation);
+    }
+
+    const count = (operationSet.size)-1;
+
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(404).json(error.message);
+  }
+};
+
+  //counter les challenge 
+  const countchallenge = async (req, res) => {
+    try {
+      const CurrentUser = await UserModel.findById(req.user.id);
+      const ChallengeList = await ChallengesModel.find()
+        .populate("user", ["matricule"])
+        .populate("participantsIds.user", ["matricule", "nom", "prenom"]);
   
+      const UserList = await UserModel.find({
+        operation: CurrentUser.operation
+      });
   
+      const matchedChallenges = [];
   
+      for (let i = 0; i < ChallengeList.length; i++) {
+        for (let j = 0; j < UserList.length; j++) {
+          if (ChallengeList[i].user && ChallengeList[i].user.equals(UserList[j]._id)) {
+            matchedChallenges.push(ChallengeList[i]);
+          }
+        }
+      }
   
+      const operationChallengesCount = matchedChallenges.length;
+  
+      res.status(200).json({  operationChallengesCount });
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
   
 module.exports = {
+    countOperation,
     ListerOperationparticiper,
     addChallengeOperation,
     ListerChallengesOperation,
@@ -285,6 +329,7 @@ module.exports = {
     ListerabsenceOperation,
     ListerabsenceOperation2,
     participerChallenge,
+    countchallenge,
 
 };
 

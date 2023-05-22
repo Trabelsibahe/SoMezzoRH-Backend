@@ -36,6 +36,16 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 OperationController.ListerOperationparticiper);
 
+//counter nb d'operation 
+router.get("/nb/operation", 
+passport.authenticate("jwt", { session: false }),
+OperationController.countOperation);
+
+
+//counter nb de challenge  
+router.get("/nb/challenge", 
+passport.authenticate("jwt", { session: false }),
+OperationController.countchallenge);
 
 router.post("/operation/Challenge/add", 
 passport.authenticate("jwt", { session: false }),
