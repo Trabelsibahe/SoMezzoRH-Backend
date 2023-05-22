@@ -13,7 +13,7 @@ const operationRoute = require ("./routes/operation");
 const ChallengeRoute = require("./routes/Challenges");
 const demandeRoute = require("./routes/demande");
 const notificationRoute = require("./routes/notification");
-const santeRoute = require("./routes/sante");
+const rdvRoute = require("./routes/rdv");
 
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
@@ -44,7 +44,7 @@ app.use("/api", notificationRoute);
 // demande
 app.use("/api", demandeRoute);
 // sante
-app.use("/api", santeRoute);
+app.use("/api", rdvRoute);
 // absence
 app.use("/api", absenceRoute);
 
