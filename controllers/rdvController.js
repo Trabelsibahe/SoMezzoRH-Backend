@@ -26,42 +26,42 @@ const ajouterdate = (req, res) => {
 //afficher le date de rdv avec medcin 
 const afficherdv = async (req, res) => {
     try {
-      const data = await RdvModel.find();
-      res.status(200).json(data)
-  
+      const rdv = await RdvModel.findOne();
+      if (rdv) {
+        const date = rdv.date;
+        res.status(200).json(date);
+      } else {
+        res.status(404).json("Aucun rendez-vous trouvé");
+      }
     } catch (error) {
-      res.status(404).json(error.message)
+      res.status(500).json(error.message);
     }
-  }
+  };
+  
   //ajouter une demande de rdv avec medcin 
   const ajouterdemande = (req, res) => {
-    RdvModel.findOne({_id: req.params.id}, (error, data) => {
+    const demandeObj = {
+      user: req.user._id,
+      maladie: req.body.maladie,
+      commentaire: req.body.commentaire,
+      etat: "en attente",
+      date: req.body.date, // Utilisation de la date fournie dans la requête
+    };
+  
+    const demandeRDV = new RdvModel(demandeObj);
+  
+    demandeRDV.save((error, createddemande) => {
       if (error) {
         return res.status(400).json({ errors: error });
       }
-  
-      const demandeObj = {
-        user: req.user._id,
-        maladie: req.body.maladie,
-        commentaire: req.body.commentaire,
-        etat:"en attente",
-        date: data.date, 
-      };
-  
-      const demandeRDV = new RdvModel(demandeObj);
-  
-      demandeRDV.save((error, createddemande) => {
-        if (error) {
-          return res.status(400).json({ errors: error });
-        }
-        if (createddemande) {
-          return res
-            .status(200)
-            .json({ message: "Vous avez ajouté une demande de rdv", createddemande });
-        }
-      });
+      if (createddemande) {
+        return res
+          .status(200)
+          .json({ message: "Vous avez ajouté une demande de rdv", createddemande });
+      }
     });
   };
+  
   //recupere mes rdv
   const MesRDV = async (req, res) => {
     try {

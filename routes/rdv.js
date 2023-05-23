@@ -22,7 +22,7 @@ passport.authenticate("jwt", { session: false }),
 RdvController.MesRDV);
 
 //ajouter une demande de rdv avec medcin 
-router.post("/rdv/add/:id", 
+router.post("/rdv/add", 
 passport.authenticate("jwt", { session: false }),
 RdvController.ajouterdemande);
 
