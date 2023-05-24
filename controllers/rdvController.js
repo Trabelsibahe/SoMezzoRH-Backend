@@ -1,28 +1,30 @@
 const { query } = require('express');
 const RdvModel = require('../models/rdv');
 
-//ajouter date de rdv avec medcin
-const ajouterdate = (req, res) => {
-  const { date } = req.body;
-
+//ajouter date de rdv avec medecin
+const ajouterdate = async (req, res) => {
   const rdvObj = {
     user: req.user._id,
-    date: new Date(req.body.date), 
- };
-
-  const dateRDV = new RdvModel(rdvObj);
-
-  dateRDV.save((error, createddate) => {
-    if (error) {
-      return res.status(400).json({ errors: error });
+    date: new Date(req.body.date),
+  };
+  try {
+    const ExDate = await RdvModel.findOne({ user: req.user._id });
+    if (ExDate) {
+      ExDate.date = rdvObj.date;
+      const updatedRdv = await ExDate.save();
+      return res.status(200).json({ message: "La date de visite médicale a été mise à jour.", updatedRdv });
+    } 
+      else {
+      const NewDate = new RdvModel(rdvObj);
+      const createdRdv = await NewDate.save();
+      return res.status(200).json({ message: "Vous avez ajouté une date de visite médicale.", createdRdv });
     }
-    if (createddate) {
-      return res
-        .status(200)
-        .json({ message: "Vous avez ajouté une date", createddate });
-    }
-  });
-};
+  } catch(error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+
 //afficher le date de rdv avec medcin 
 const afficherdv = async (req, res) => {
     try {
