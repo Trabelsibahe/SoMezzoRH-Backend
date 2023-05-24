@@ -20,7 +20,12 @@ passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 ChallengesController.listerChallenge);
 
-//counte challenge 
+router.post(`/challenge/update/:UserId`, 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+ChallengesController.updateChallenge);
+
+//count challenge 
 router.get("/nb/challenges", 
 passport.authenticate("jwt", { session: false }),
 ChallengesController.countChallenge);

@@ -41,7 +41,13 @@ const ChallengeSchema = new Schema(
       participations: {
         type: Number,
         default: 0
-      }
+      },
+      valide: {
+        type: Boolean,
+        default: false,
+      },
+      prime: String,
+
     }]
   },
   {
