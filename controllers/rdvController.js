@@ -85,7 +85,7 @@ const afficherdv = async (req, res) => {
       } else {
         const acceptedUsersCount = await RdvModel.countDocuments({ etat: "accepté" });
   
-        if (acceptedUsersCount >= 5) {
+        if (acceptedUsersCount >= 5 && etat === "accepté") {
           res.status(403).json({ message: "Le nombre maximum d'utilisateurs acceptés a été atteint" });
         } else {
           rdv.etat = etat;
@@ -97,6 +97,7 @@ const afficherdv = async (req, res) => {
       res.status(500).json({ message: "Une erreur est survenue lors de la modification de la rdv", error });
     }
   };
+  
   // afficher tous les absences
 const afficherdemande = async (req, res) => {
     try {
