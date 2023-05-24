@@ -11,6 +11,7 @@ const rdv = new Schema({
     commentaire: "string",
     date : Date,
     etat:"string",
+    motif : "string",
 
   },
       {
