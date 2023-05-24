@@ -78,6 +78,8 @@ const afficherdv = async (req, res) => {
   const etatrdv = async (req, res) => {
     const rdvId = req.params.id;
     const etat = req.body.etat;
+    const motif = req.body.motif;
+
   
     try {
       const rdv = await RdvModel.findById(rdvId);
@@ -91,6 +93,7 @@ const afficherdv = async (req, res) => {
           res.status(403).json({ message: "Le nombre maximum d'utilisateurs acceptés a été atteint" });
         } else {
           rdv.etat = etat;
+          rdv.motif = motif;
           await rdv.save();
           res.status(200).json({ message: "La demande a été modifiée avec succès", rdv });
         }
