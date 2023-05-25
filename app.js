@@ -14,7 +14,7 @@ const ChallengeRoute = require("./routes/Challenges");
 const demandeRoute = require("./routes/demande");
 const notificationRoute = require("./routes/notification");
 const rdvRoute = require("./routes/rdv");
-
+const archiverdvRoute = require("./routes/archiverdv")
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
@@ -39,6 +39,8 @@ app.use('/uploadsjustif', express.static('./uploadsjustif'))
 app.use('/uploadsattestation', express.static('./uploadsattestation'))
 // archive
 app.use("/api", archiveRoute);
+// archive
+app.use("/api", archiverdvRoute);
 // notification
 app.use("/api", notificationRoute);
 // demande

@@ -37,4 +37,9 @@ router.get("/demande/afficher",
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 RdvController.afficherdemande);
+/* Archive profile */
+router.delete("/rdvsupp", 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.EXPERT),
+RdvController.archiverRdv);
 module.exports = router;

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const rdv = new Schema({
+const archiverdv = new Schema({
     user: {
       type: Schema.Types.ObjectId,
       ref: "users",
@@ -20,4 +20,4 @@ const rdv = new Schema({
       }
 );
 
-module.exports = mongoose.model('rdv', rdv);
+module.exports = mongoose.model('archiverdv', archiverdv);
