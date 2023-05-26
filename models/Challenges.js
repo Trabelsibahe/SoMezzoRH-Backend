@@ -26,6 +26,9 @@ const ChallengeSchema = new Schema(
     priorite: {
       type: String
     },
+    prime: {
+      type: "number"
+    },
     participer: {
       type: String
     },
@@ -39,14 +42,16 @@ const ChallengeSchema = new Schema(
         ref: 'users'
       },
       participations: {
-        type: Number,
+        type: "number",
         default: 0
       },
       valide: {
         type: Boolean,
         default: false,
       },
-      prime: String,
+      total: {
+        type: "number"
+      },
 
     }]
   },

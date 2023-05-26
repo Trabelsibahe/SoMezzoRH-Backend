@@ -32,8 +32,12 @@ const afficherdv = async (req, res) => {
     try {
       const rdv = await RdvModel.findOne();
       if (rdv) {
-        const date = rdv.date;
-        res.status(200).json(date);
+        const info ={
+           date : rdv.date,
+           capacite : rdv.capacite,
+        }
+      
+        res.status(200).json(info);
       } else {
         res.status(404).json("Aucun rendez-vous trouvé");
       }
@@ -116,7 +120,7 @@ const afficherdv = async (req, res) => {
   const archiverRdv = async (req, res) => {
     try {
       const today = new Date();
-      const rdvsToDelete = await RdvModel.find({ date: { $lt: today } });
+      const rdvsToDelete = await RdvModel.find({ date: { $lt: today.getTime() - 23 * 60 * 60 * 1000 } });
   
       if (rdvsToDelete.length === 0) {
         const response = {

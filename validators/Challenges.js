@@ -9,6 +9,7 @@ module.exports = function ValidateChallenge(data) {
   data.dateCreation = !isEmpty(data.dateCreation) ? data.dateCreation : "";
   data.dateSuppression = !isEmpty(data.dateSuppression) ? data.dateSuppression : "";
   data.priorite = !isEmpty(data.priorite) ? data.priorite : "";
+  data.prime = !isEmpty(data.prime) ? String(data.prime) : "";
 
   if (validator.isEmpty(data.titre)) {
     errors.titre = "Veuillez entrer le titre.";
@@ -26,7 +27,9 @@ module.exports = function ValidateChallenge(data) {
   if (validator.isEmpty(data.priorite)) {
     errors.priorite = "Veuillez entrer la priorite";
   }
-
+  if (!validator.isNumeric(data.prime)) {
+    errors.prime = "Veuillez entrer un nombre pour le prime";
+  }
   return {
     errors,
     isValid: isEmpty(errors)

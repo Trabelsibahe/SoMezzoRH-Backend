@@ -19,12 +19,14 @@ router.get("/allChallenges",
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.EXPERT),
 ChallengesController.listerChallenge);
-
-router.post(`/challenge/update/:UserId`, 
+router.post(`/challenge/update/:challengeId`, 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
 ChallengesController.updateChallenge);
-
+router.post(`/challenge/total/:challengeId`, 
+passport.authenticate("jwt", { session: false }),
+inRole(ROLES.RRH),
+ChallengesController.updateTotal);
 //count challenge 
 router.get("/nb/challenges", 
 passport.authenticate("jwt", { session: false }),

@@ -41,7 +41,6 @@ router.get("/nb/operation",
 passport.authenticate("jwt", { session: false }),
 OperationController.countOperation);
 
-
 //counter nb de challenge  
 router.get("/nb/challenge", 
 passport.authenticate("jwt", { session: false }),

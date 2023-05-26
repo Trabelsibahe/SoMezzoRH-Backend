@@ -145,7 +145,7 @@ const addChallengeOperation = async (req, res) => {
   
       // Ajouter une nouvelle tâche
       if (req.method === "POST") {
-        const { titre, description, dateCreation, dateSuppression, priorite } = req.body;
+        const { titre, description, dateCreation, dateSuppression, priorite,prime } = req.body;
   
         const newChallenges = new ChallengesModel({
           titre,
@@ -154,6 +154,7 @@ const addChallengeOperation = async (req, res) => {
           dateSuppression: new Date(dateSuppression),
           priorite,
           user: req.user.id,
+          prime 
         });
   
         const createdChallenges = await newChallenges.save();
@@ -319,6 +320,12 @@ const countOperation = async (req, res) => {
       res.status(404).json(error.message);
     }
   };
+
+  
+  
+  
+  
+  
   
 module.exports = {
     countOperation,

@@ -1,6 +1,7 @@
 const { query } = require('express');
 const ChallengeModel = require('../models/Challenges');
 const ValidateChallenge = require("../validators/Challenges")
+const UserModel = require('../models/user');
 
 
 //add Challenge
@@ -14,6 +15,7 @@ const ajouterChallenge = (req, res) => {
         dateCreation: new Date(req.body.dateCreation),
         dateSuppression: new Date(req.body.dateSuppression),
         priorite: req.body.priorite,
+        prime: req.body.prime,
     }
     if (!isValid) {
         res.status(404).json(errors);
@@ -43,25 +45,45 @@ const listerChallenge = async (req, res) => {
 
 // modifier le challenge / Validation & Prime
 const updateChallenge = async (req, res) => {
-    const { UserId } = req.params;
-    const { valide, prime } = req.body;
     try {
-        const challenge = await ChallengeModel.find({ UserId });
-        if (!challenge) {
-            return res.status(404).json({ message: "Challenge introuvable." });
+      const participantsData = req.body.participants;
+  
+      const challengeId = req.params.challengeId;
+  
+      const challenge = await ChallengeModel.findById(challengeId);
+  
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge non trouvé" });
+      }
+  
+      Object.keys(participantsData).forEach(async (key) => {
+        const { userId, valide } = participantsData[key];
+        const participantIndex = challenge.participantsIds.findIndex(
+          (participant) => participant.user.toString() === userId
+        );
+        if (participantIndex !== -1) {
+          challenge.participantsIds[participantIndex].valide = valide;
         }
-        challenge[0].participantsIds.forEach(item => {
-            if (UserId === item.user._id.toString()) {
-                item.valide = valide;
-                item.prime = prime;
-                challenge[0].save();
-            }
-        });
-        res.status(200).json({ message: "Challenge modifié avec succès" });
+      });
+  
+      await challenge.save();
+  
+      res.status(200).json({
+        message: "Participants du challenge mis à jour avec succès",
+        participantsData,
+      });
     } catch (error) {
-        res.status(404).json(error.message);
+      res.status(500).json({
+        message: "Une erreur s'est produite lors de la mise à jour des participants du challenge.",
+        error: error.message,
+      });
     }
-}
+  };
+  
+  
+  
+  
+  
 // supprimer le challenge
 const supprimerChallenge = (req, res) => {
     const dateActuelle = new Date();
@@ -94,8 +116,55 @@ const countChallenge = async (req, res) => {
         res.status(404).json(error.message);
     }
 };
+const updateTotal = async (req, res) => {
+    try {
+      const participantsData = req.body.participants;
+      const challengeId = req.params.challengeId;
+      const challenge = await ChallengeModel.findById(challengeId);
+  
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge non trouvé" });
+      }
+  
+      Object.keys(participantsData).forEach(async (key) => {
+        const { userId, valide } = participantsData[key];
+        const participantIndex = challenge.participantsIds.findIndex(
+          (participant) => participant.user.toString() === userId
+        );
+        if (participantIndex !== -1) {
+          challenge.participantsIds[participantIndex].valide = valide;
+          if (valide) {
+            const participant = challenge.participantsIds[participantIndex];
+            participant.total = participant.participations * challenge.prime;
+          } else {
+            const participant = challenge.participantsIds[participantIndex];
+            participant.total = 0;
+          }
+        }
+      });
+  
+      await challenge.save();
+  
+      res.status(200).json({
+        message: "Participants du challenge mis à jour avec succès",
+        participantsData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "Une erreur s'est produite lors de la mise à jour des participants du challenge.",
+        error: error.message,
+      });
+    }
+  };
 
+  
+  
+  
+  
+  
 module.exports = {
+    updateTotal,
     countChallenge,
     supprimerChallenge,
     ajouterChallenge,
