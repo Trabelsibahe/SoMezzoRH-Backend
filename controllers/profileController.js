@@ -63,17 +63,26 @@ const CreateProfile = async (req, res) => {
 
   }
 };
-//toute la liste des employes
+
+
+//toute la liste des employes // expert
 const FindAllProfiles = async (req, res) => {
   try {
     const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
-    res.status(200).json(data)
+    const accounts = [];
+    data.forEach(profile => {
+      if (profile.user.role !== "EXPERT") {
+        accounts.push(profile);
+      }
+    });
+    res.status(200).json(accounts)
 
   } catch (error) {
     res.status(404).json(error.message)
   }
 }
 
+// find one profile
 const FindSingleProfile = async (req, res) => {
   try {
     const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
@@ -83,6 +92,8 @@ const FindSingleProfile = async (req, res) => {
     res.status(404).json(error.message)
   }
 }
+
+
 //fonction modifier profile (CRUD)
 const modifierProfileById = async (req, res) => {
   const param = req.params.id;

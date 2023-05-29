@@ -19,6 +19,7 @@ const ListerOperation = async (req, res) => {
             operation: CurrentUser.operation
         });
         const matchedProfiles = [];
+        const matchedProfilesWithoutRRH = [];
 
 
         for (let i = 0; i < ProfileList.length; i++) {
@@ -28,8 +29,14 @@ const ListerOperation = async (req, res) => {
                 }
             }
         }
+        
+        matchedProfiles.forEach(profiles => {
+          if (profiles.user.role !== "RRH") {
+            matchedProfilesWithoutRRH.push(profiles);
+          }
+        });
 
-        res.status(200).json(matchedProfiles);
+        res.status(200).json(matchedProfilesWithoutRRH);
 
     } catch (error) {
         res.status(404).json(error.message)
