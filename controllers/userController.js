@@ -8,7 +8,6 @@ const ValidatePasswordChange = require("../validators/PasswordChange");
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require("uuid");
 
-
 //register
 const Register = async (req, res) => {
   const { errors, isValid } = ValidateRegister(req.body);
@@ -118,10 +117,14 @@ const Login = async (req, res) => {
 const EMP = (req, res) => {
   res.send("bienvenue EMP");
 };
+
+
 // /admin
 const EXPERT = (req, res) => {
   res.send("bienvenue EXPERT");
 };
+
+
 const transporter = nodemailer.createTransport({
  service : "gmail",
   auth: {
@@ -129,15 +132,20 @@ const transporter = nodemailer.createTransport({
     pass: "mgoblzwnzgvpalyn",
   },
 });
+
+
+
+
+// send password reset 
+
 const sendPasswordResetEmail = async (req,res) => {
+
   const email = String(req.body.email);
   try {
     const user = await UserModel.findOne({ email });
-    //console.log(user)
+
     if (user) {
     const resetToken = uuidv4(); // Générer un jeton de réinitialisation unique
-
-    // Enregistrer le jeton de réinitialisation dans la base de données pour cet utilisateur
     user.resetToken = resetToken;
     await user.save();
 
@@ -162,14 +170,15 @@ const sendPasswordResetEmail = async (req,res) => {
   }
 };
 
+
+
+// reset
 const resetPassword = async (req, res) => {
   const { resetToken, newPassword } = req.body;
   try {
     if (!resetToken || !newPassword) {
       return res.status(400).json({ message: "Les données de réinitialisation du mot de passe sont incomplètes." });
     }
-
-    // Rechercher l'utilisateur avec le jeton de réinitialisation et l'identifiant unique (par exemple, l'e-mail)
     const user = await UserModel.findOne({
       resetToken,
       email: req.body.email
@@ -192,6 +201,9 @@ const resetPassword = async (req, res) => {
     return res.status(500).json({ message: "Une erreur s'est produite lors de la réinitialisation du mot de passe." });
   }
 };
+
+
+// gfdfdffd
 
 const FindAllUser = async (req, res) => {
   try {

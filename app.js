@@ -16,7 +16,10 @@ const notificationRoute = require("./routes/notification");
 const rdvRoute = require("./routes/rdv");
 const archiverdvRoute = require("./routes/archiverdv");
 const user = require("./models/user");
-const userController = require("./controllers/userController")
+const userController = require("./controllers/userController");
+
+NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
