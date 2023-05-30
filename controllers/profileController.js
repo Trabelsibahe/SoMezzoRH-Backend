@@ -67,10 +67,6 @@ const CreateProfile = async (req, res) => {
 //toute la liste des employes // expert
 const FindAllProfiles = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active","email"])
-    res.status(200).json(data)
-=======
     const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
     const accounts = [];
     data.forEach(profile => {
@@ -79,7 +75,6 @@ const FindAllProfiles = async (req, res) => {
       }
     });
     res.status(200).json(accounts)
->>>>>>> a0dff55530f36aa392039ef8bec52a13c5a8fb0c
 
   } catch (error) {
     res.status(404).json(error.message)
