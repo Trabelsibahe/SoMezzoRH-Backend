@@ -13,7 +13,8 @@ module.exports = function ValidateRegister(data) {
   data.role = !isEmpty(data.role) ? data.role : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   data.confirm = !isEmpty(data.confirm) ? data.confirm : "";
-  
+  data.email = !isEmpty(data.email) ? data.email : "";
+
 //test+msg erreur 
   if (validator.isEmpty(data.nom)) {
     errors.nom = "Veuillez saisir un nom.";
@@ -33,7 +34,9 @@ module.exports = function ValidateRegister(data) {
   if (validator.isEmpty(data.role)) {
     errors.role = "Veuillez choisir un role.";
   }
-
+  if (validator.isEmpty(data.email)) {
+    errors.email = "Veuillez entrer votre email.";
+  }
   if (validator.isEmpty(data.password)) {
     errors.password = "Veuillez entrez un mot de passe.";
   }
@@ -43,7 +46,9 @@ module.exports = function ValidateRegister(data) {
   if (validator.isEmpty(data.confirm)) {
     errors.confirm = "Veuillez confirmer le mot de passe.";
   }
-  
+   if (!validator.isEmail(data.email)) {
+    errors.email = "Veuillez donner un email valide.";
+  }
 
 
   return {

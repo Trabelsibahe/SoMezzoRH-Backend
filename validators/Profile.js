@@ -9,7 +9,6 @@ module.exports = function ValidateProfile(data) {
   data.pays = !isEmpty(data.pays) ? data.pays : "";
   data.codepostal = !isEmpty(data.codepostal) ? data.codepostal : "";
   data.adresse = !isEmpty(data.adresse) ? data.adresse : "";
-  data.email = !isEmpty(data.email) ? data.email : "";
   data.datenaiss = !isEmpty(data.datenaiss) ? data.datenaiss : "";
   data.gouvernorat = !isEmpty(data.gouvernorat) ? data.gouvernorat : "";
 
@@ -39,12 +38,8 @@ module.exports = function ValidateProfile(data) {
   if (validator.isEmpty(data.gouvernorat)) {
     errors.gouvernorat = "Veuillez entrer votre Gouvernorat.";
   }
-  if (validator.isEmpty(data.email)) {
-    errors.email = "Veuillez entrer votre email.";
-  }
-  if (!validator.isEmail(data.email)) {
-    errors.email = "Veuillez donner un email valide.";
-  }
+
+ 
   if (!validator.isDate(data.datenaiss)) {
     errors.datenaiss = "Veuillez entrer votre Date de naissance.";
   }

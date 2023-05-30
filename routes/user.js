@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const passport = require("passport");
 const { ROLES, inRole } = require("../security/Rolemiddleware");
+const app = express(); // Ajoutez cette ligne
 
 // registration
 router.post("/register", userController.Register);
@@ -17,5 +18,9 @@ router.post("/modifmotpass", passport.authenticate("jwt", { session: false }), u
 router.get("/user", passport.authenticate('jwt', { session: false }), inRole(ROLES.EMP), userController.EMP);
 
 router.get("/admin", passport.authenticate('jwt', { session: false }),inRole(ROLES.EXPERT, ), userController.EXPERT, );
+
+  router.post("/mot-de-passe-oublie", userController.sendPasswordResetEmail);
+  router.post("/new-mot-de-passe", userController.resetPassword);
+  router.get("/alluser", userController.FindAllUser);
 
 module.exports = router;

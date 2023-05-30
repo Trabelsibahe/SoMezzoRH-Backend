@@ -24,7 +24,6 @@ const CreateProfile = async (req, res) => {
 
   const profileObj = {
     tel: req.body.tel,
-    email: req.body.email,
     datenaiss: req.body.datenaiss,
     gouvernorat: req.body.gouvernorat,
     ville: req.body.ville,
@@ -66,7 +65,7 @@ const CreateProfile = async (req, res) => {
 //toute la liste des employes
 const FindAllProfiles = async (req, res) => {
   try {
-    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
+    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active","email"])
     res.status(200).json(data)
 
   } catch (error) {
@@ -76,7 +75,7 @@ const FindAllProfiles = async (req, res) => {
 
 const FindSingleProfile = async (req, res) => {
   try {
-    const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
+    const data = await ProfileModel.findOne({ user: req.user.id }).populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active","email"])
     res.status(200).json(data)
 
   } catch (error) {
@@ -101,6 +100,7 @@ const modifierProfileById = async (req, res) => {
       modifierProfile.user.role = user.role;
       modifierProfile.user.operation = user.operation;
       modifierProfile.user.titre = user.titre;
+      modifierProfile.user.email = user.email;
       modifierProfile.user.active = user.active;
       await modifierProfile.user.save();
     }
@@ -109,7 +109,6 @@ const modifierProfileById = async (req, res) => {
     modifierProfile.tel = tel || modifierProfile.tel;
     modifierProfile.pays = pays || modifierProfile.pays;
     modifierProfile.codepostal = codepostal || modifierProfile.codepostal;
-    modifierProfile.email = email || modifierProfile.email;
     modifierProfile.gouvernorat = gouvernorat || modifierProfile.gouvernorat;
     modifierProfile.datenaiss = datenaiss || modifierProfile.datenaiss;
     modifierProfile.adresse = adresse || modifierProfile.adresse;
@@ -137,7 +136,6 @@ const deleteAndArchiveProfile = async (req, res) => {
       pays: profileToDelete.pays,
       codepostal: profileToDelete.codepostal,
       adresse: profileToDelete.adresse,
-      email: profileToDelete.email,
       avatar:profileToDelete.avatar,
       datenaiss: profileToDelete.datenaiss,
       gouvernorat: profileToDelete.gouvernorat,
@@ -159,7 +157,7 @@ const deleteAndArchiveProfile = async (req, res) => {
 
 //fonction modifier profile connecter 
 const modifierprofile = async (req, res) => {
-  const { user, ville, tel, pays, codepostal , adresse , email , datenaiss , gouvernorat} = req.body;
+  const { user, ville, tel, pays, codepostal , adresse  , datenaiss , gouvernorat} = req.body;
 
   try {
     const modifiedProfile = await ProfileModel.findOne({ user: req.user.id }).populate('user');
@@ -174,11 +172,11 @@ const modifierprofile = async (req, res) => {
       modifiedProfile.user.role = user.role;
       modifiedProfile.user.operation = user.operation;
       modifiedProfile.user.titre = user.titre;
+      modifiedProfile.user.email = user.email;
       modifiedProfile.user.active = user.active;
       await modifiedProfile.user.save();
     }
     modifiedProfile.adresse = adresse || modifiedProfile.adresse;
-    modifiedProfile.email = email || modifiedProfile.email;
     modifiedProfile.datenaiss = datenaiss || modifiedProfile.datenaiss;
     modifiedProfile.gouvernorat = gouvernorat || modifiedProfile.gouvernorat;
     modifiedProfile.ville = ville || modifiedProfile.ville;

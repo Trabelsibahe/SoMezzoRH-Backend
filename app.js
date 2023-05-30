@@ -14,7 +14,9 @@ const ChallengeRoute = require("./routes/Challenges");
 const demandeRoute = require("./routes/demande");
 const notificationRoute = require("./routes/notification");
 const rdvRoute = require("./routes/rdv");
-const archiverdvRoute = require("./routes/archiverdv")
+const archiverdvRoute = require("./routes/archiverdv");
+const user = require("./models/user");
+const userController = require("./controllers/userController")
 // path
 app.use(cors()); // rabta mte3 react @crossorigin
 app.use(express.json());
@@ -67,7 +69,17 @@ app.use('/uploads', express.static('./uploads'))
 app.get("/api", (req, res) => {
     res.send("Welcome to SoMezzoRH API. :)");
   });
-
+  app.post('/mot-de-passe-oublie', (req, res) => {
+    const email = req.body.email;
+    userController.sendPasswordResetEmail(email, res)
+      .then(() => {
+        return res.status(200).json({ message: "Un e-mail de réinitialisation de mot de passe a été envoyé." });
+      })
+      .catch((error) => {
+        res.status(500).json({ message: "Une erreur s'est produite lors de l'envoi de l'e-mail de réinitialisation." });
+      });
+  });
+ 
 
 // hedhi rabta mabin backend o bd
 mongoose.connect("mongodb://127.0.0.1:27017/somezzo_rh", {

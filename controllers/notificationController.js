@@ -90,7 +90,7 @@ const sendNotificationtoOneUser = async (req, res) => {
 // Afficher tous les notification (expert)
 const FindNotifications = async (req, res) => {
   try {
-    const data = await NotificationModel.find({ userId: req.user._id }).populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active"]);
+    const data = await NotificationModel.find({ userId: req.user._id }).populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active","email"]);
     res.status(200).json(data)
 
   } catch (error) {

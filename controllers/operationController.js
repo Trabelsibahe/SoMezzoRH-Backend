@@ -67,7 +67,7 @@ const ListerabsenceOperation2 = async (req, res) => {
 
     try {
         const CurrentUser = await UserModel.findById(req.user.id);
-        const AbsenceList = await AbsenceModel.find().populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active"]);
+        const AbsenceList = await AbsenceModel.find().populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active","email"]);
 
         const UserList = await UserModel.find({
             operation: CurrentUser.operation
@@ -138,6 +138,7 @@ const addChallengeOperation = async (req, res) => {
         "operation",
         "titre",
         "active",
+        "email",
       ]);
       const UserList = await UserModel.find({
         operation: CurrentUser.operation,
@@ -186,6 +187,7 @@ const addChallengeOperation = async (req, res) => {
         "operation",
         "titre",
         "active",
+        "email",
       ]);
       const UserList = await UserModel.find({
         operation: CurrentUser.operation,

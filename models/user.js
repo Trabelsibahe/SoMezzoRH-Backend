@@ -15,6 +15,11 @@ const User = new Schema(
     operation: "string",
     titre : "string",
     active : "Boolean",
+    email:{
+      type: String,
+      trim:true,
+      unique:true,
+    }
    
   },
   {
