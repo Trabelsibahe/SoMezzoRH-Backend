@@ -331,12 +331,83 @@ const countOperation = async (req, res) => {
   };
 
   
+  const count = async (req, res) => {
+    try {
+      const userId = req.user.id;
+  
+      const challenges = await ChallengesModel.find({
+        "participantsIds.user": userId
+      });
+  
+      const participationSum = challenges.reduce((total, challenge) => {
+        const participant = challenge.participantsIds.find(participant => participant.user.toString() === userId);
+        return total + (participant ? participant.participations : 0);
+      }, 0);
+  
+      res.status(200).json({ participationSum });
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
+  
+  const counttotal = async (req, res) => {
+    try {
+      const userId = req.user.id;
+  
+      const challenges = await ChallengesModel.find({
+        "participantsIds.user": userId
+      });
+  
+      const totalSum = challenges.reduce((total, challenge) => {
+        const participant = challenge.participantsIds.find(participant => participant.user.toString() === userId);
+        return total + (participant ? participant.total : 0);
+      }, 0);
+  
+      res.status(200).json({ totalSum });
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
+  const countempop= async (req, res) => {
+    try {
+      const CurrentUser = await UserModel.findById(req.user.id);
+      const ProfileList = await ProfileModel.find().populate('user', ["matricule", "role", "nom", "prenom", "operation", "titre", "active"]);
+  
+      const UserList = await UserModel.find({
+        operation: CurrentUser.operation
+      });
+  
+      const matchedProfiles = [];
+  
+      for (let i = 0; i < ProfileList.length; i++) {
+        for (let j = 0; j < UserList.length; j++) {
+          if (ProfileList[i].user.equals(UserList[j]._id)) {
+            matchedProfiles.push(ProfileList[i]);
+          }
+        }
+      }
+      const userCount = await UserModel.countDocuments({
+        operation: CurrentUser.operation
+      });
+  
+      res.status(200).json({
+        userCount
+      });
+    } catch (error) {
+      res.status(404).json(error.message);
+    }
+  };
+  
+
   
   
   
   
   
 module.exports = {
+  countempop,
+  counttotal,
+    count,
     countOperation,
     ListerOperationparticiper,
     addChallengeOperation,

@@ -19,8 +19,9 @@ const User = new Schema(
       type: String,
       trim:true,
       unique:true,
-    }
-   
+    },
+    resetToken: { type: String, default: null }
+    
   },
   {
     timestamps: true,

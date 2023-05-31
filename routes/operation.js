@@ -55,5 +55,15 @@ router.post(
     passport.authenticate("jwt", { session: false }),
     OperationController.participerChallenge
   );
+  router.get("/nb/:id", 
+passport.authenticate("jwt", { session: false }),
+OperationController.count);
+router.get("/nbemp/:id", 
+passport.authenticate("jwt", { session: false }),
+OperationController.countempop);
+router.get("/nbtotal/:id", 
+passport.authenticate("jwt", { session: false }),
+OperationController.counttotal);
+
 module.exports = router;
 

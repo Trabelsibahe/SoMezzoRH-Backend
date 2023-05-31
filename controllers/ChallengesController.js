@@ -79,11 +79,7 @@ const updateChallenge = async (req, res) => {
       });
     }
   };
-  
-  
-  
-  
-  
+ 
 // supprimer le challenge
 const supprimerChallenge = (req, res) => {
     const dateActuelle = new Date();
@@ -158,7 +154,8 @@ const updateTotal = async (req, res) => {
     }
   };
 
-  
+
+
   
   
   

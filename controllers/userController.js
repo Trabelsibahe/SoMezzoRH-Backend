@@ -171,17 +171,18 @@ const sendPasswordResetEmail = async (req,res) => {
 };
 
 
-
 // reset
 const resetPassword = async (req, res) => {
-  const { resetToken, newPassword } = req.body;
+  const { resetToken, newPassword, confirmPassword } = req.body;
   try {
-    if (!resetToken || !newPassword) {
+    if (!resetToken || !newPassword || !confirmPassword) {
       return res.status(400).json({ message: "Les données de réinitialisation du mot de passe sont incomplètes." });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Le mot de passe et la confirmation ne correspondent pas." });
     }
     const user = await UserModel.findOne({
       resetToken,
-      email: req.body.email
     });
     if (!user) {
       return res.status(400).json({ message: "Le jeton de réinitialisation est invalide ou l'utilisateur n'a pas été trouvé." });
@@ -201,6 +202,7 @@ const resetPassword = async (req, res) => {
     return res.status(500).json({ message: "Une erreur s'est produite lors de la réinitialisation du mot de passe." });
   }
 };
+
 
 
 // gfdfdffd

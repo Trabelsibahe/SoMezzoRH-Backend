@@ -31,7 +31,6 @@ ChallengesController.updateTotal);
 router.get("/nb/challenges", 
 passport.authenticate("jwt", { session: false }),
 ChallengesController.countChallenge);
-
 router.delete("/Challenge/supp", 
 passport.authenticate("jwt", { session: false }),
 inRole(ROLES.RRH),
