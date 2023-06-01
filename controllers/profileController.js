@@ -67,7 +67,7 @@ const CreateProfile = async (req, res) => {
 //toute la liste des employes // expert
 const FindAllProfiles = async (req, res) => {
   try {
-    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active"])
+    const data = await ProfileModel.find().populate('user', ["matricule", "role","nom", "prenom", "operation","titre", "active","email"])
     const accounts = [];
     data.forEach(profile => {
       if (profile.user.role !== "EXPERT") {
@@ -96,7 +96,7 @@ const FindSingleProfile = async (req, res) => {
 //fonction modifier profile (CRUD)
 const modifierProfileById = async (req, res) => {
   const param = req.params.id;
-  const { user, ville, tel, pays, codepostal,email,gouvernorat,datenaiss,adresse } = req.body;
+  const { user, ville, tel, pays, codepostal,gouvernorat,datenaiss,adresse } = req.body;
 
   try {
     const modifierProfile = await ProfileModel.findById(param).populate('user');
