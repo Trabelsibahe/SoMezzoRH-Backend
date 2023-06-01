@@ -22,7 +22,7 @@ module.exports = function ValidateRegister(data) {
   if (validator.isEmpty(data.prenom)) {
     errors.prenom = "Veuillez saisir un prénom.";
   }
-  if (validator.isEmpty(data.operation)) {
+  if (validator.isEmpty(data.operation) && data.role != "EXPERT") {
     errors.operation = "Veuillez entrer le nom de l'opération.";
   }
   if (validator.isEmpty(data.active)) {
