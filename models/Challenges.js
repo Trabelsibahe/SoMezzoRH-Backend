@@ -50,7 +50,7 @@ const ChallengeSchema = new Schema(
         default: false,
       },
       total: {
-        type: "number"
+        type: Number
       },
 
     }]

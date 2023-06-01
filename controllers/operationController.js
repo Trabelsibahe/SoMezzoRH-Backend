@@ -129,7 +129,7 @@ const ListerChallengesOperation = async (req, res) => {
       }
     };
     
-
+//ajouter une challenge 
 const addChallengeOperation = async (req, res) => {
     const { errors, isValid } = ValidateChallenge(req.body);
     if (!isValid) {
@@ -182,7 +182,7 @@ const addChallengeOperation = async (req, res) => {
       res.status(404).json(error.message);
     }
   }};
-
+//participer au challenge
   const participerChallenge = async (req, res) => {
     try {
       const CurrentUser = await UserModel.findById(req.user.id);
@@ -300,7 +300,7 @@ const countOperation = async (req, res) => {
   }
 };
 
-  //counter les challenge 
+  //counter les challenge pour rrh
   const countchallenge = async (req, res) => {
     try {
       const CurrentUser = await UserModel.findById(req.user.id);
@@ -330,7 +330,7 @@ const countOperation = async (req, res) => {
     }
   };
 
-  
+  //counter le nb de participation total pour chaque user
   const count = async (req, res) => {
     try {
       const userId = req.user.id;
@@ -349,7 +349,8 @@ const countOperation = async (req, res) => {
       res.status(404).json(error.message);
     }
   };
-  
+
+  //counter le nb de total de chaque user
   const counttotal = async (req, res) => {
     try {
       const userId = req.user.id;
@@ -358,9 +359,9 @@ const countOperation = async (req, res) => {
         "participantsIds.user": userId
       });
   
-      const totalSum = challenges.reduce((total, challenge) => {
+      const totalSum = challenges.reduce((totals, challenge) => {
         const participant = challenge.participantsIds.find(participant => participant.user.toString() === userId);
-        return total + (participant ? participant.total : 0);
+        return totals + (participant.total ? participant.total : 0);
       }, 0);
   
       res.status(200).json({ totalSum });
@@ -368,6 +369,9 @@ const countOperation = async (req, res) => {
       res.status(404).json(error.message);
     }
   };
+  
+  
+  //counter le nb des employe par operation
   const countempop= async (req, res) => {
     try {
       const CurrentUser = await UserModel.findById(req.user.id);
@@ -398,13 +402,40 @@ const countOperation = async (req, res) => {
     }
   };
   
+  const countParticipants = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const challenges = await ChallengesModel.find({
+        user: userId
+      });
+  
+      const uniqueParticipants = new Set();
+  
+      challenges.forEach(challenge => {
+        challenge.participantsIds.forEach(participant => {
+          uniqueParticipants.add(participant.user.toString());
+        });
+      });
+  
+      const participantCount = uniqueParticipants.size;
+  
+      res.status(200).json({ participantCount });
+    } catch (error) {
+      res.status(500).json({ message: "Une erreur s'est produite lors du comptage des participants" });
+    }
+  };
+  
+  
 
   
   
   
   
   
+  
+  
 module.exports = {
+  countParticipants,
   countempop,
   counttotal,
     count,
