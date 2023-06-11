@@ -17,19 +17,19 @@ const Register = async (req, res) => {
     } else {
       UserModel.findOne({ matricule: req.body.matricule }).then(async (exist) => {
         if (exist) {
-          errors.matricule = "utilisateur déjà existant";
+          errors.matricule = "Ce matricule existe déjà.";
           res.status(404).json(errors);
         } else {
           UserModel.findOne({ email: req.body.email }).then(async (exist) => {
             if (exist) {
-              errors.email = "email déjà existant";
+              errors.email = "Cet email existe déjà.";
               res.status(404).json(errors);
             } else {
               const hash = bcrypt.hashSync(req.body.password, 10); //hashed password
               req.body.password = hash;
               //req.body.role = "EMP";
               await UserModel.create(req.body);
-              res.status(200).json({ message: "création d'un nouvel utilisateur" });
+              res.status(200).json({ message: "Compte créé. " });
             }
           });
         }
