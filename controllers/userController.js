@@ -57,10 +57,10 @@ const modifmotpass = async (req, res) => {
         res.status(400).json(errors);
       }
       else {
-      const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
-      user.password = hashedPassword;
-      await user.save();
-      return res.status(200).json({ message: "Mot de passe modifié avec succès." });
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+        return res.status(200).json({ message: "Mot de passe modifié avec succès." });
       }
     }
   }
@@ -126,7 +126,7 @@ const EXPERT = (req, res) => {
 
 
 const transporter = nodemailer.createTransport({
- service : "gmail",
+  service: "gmail",
   auth: {
     user: "rhmezzo0@gmail.com",
     pass: "mgoblzwnzgvpalyn",
@@ -140,32 +140,32 @@ const transporter = nodemailer.createTransport({
 
 // send password reset 
 
-const sendPasswordResetEmail = async (req,res) => {
+const sendPasswordResetEmail = async (req, res) => {
 
   const email = String(req.body.email);
   try {
     const user = await UserModel.findOne({ email });
 
     if (user) {
-    const resetToken = uuidv4(); // Générer un jeton de réinitialisation unique
-    user.resetToken = resetToken;
-    await user.save();
+      const resetToken = uuidv4(); // Générer un jeton de réinitialisation unique
+      user.resetToken = resetToken;
+      await user.save();
 
-    const resetLink = `http://localhost:3000/newmotdepasse/${resetToken}`; // URL de réinitialisation du mot de passe
+      const resetLink = `http://localhost:3000/newmotdepasse/${resetToken}`; // URL de réinitialisation du mot de passe
 
-    const mailOptions = {
-      from: "rhmezzo0@gmail.com",
-      to: email,
-      subject: "Réinitialisation de mot de passe",
-      text: `Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : ${resetLink}`,
-    };
+      const mailOptions = {
+        from: "rhmezzo0@gmail.com",
+        to: email,
+        subject: "Réinitialisation de mot de passe",
+        text: `Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe : ${resetLink}`,
+      };
 
-    await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
 
-    return res.status(200).json({ message: "Un e-mail de réinitialisation de mot de passe a été envoyé." });
- } else {
-  return res.status(400).json({ message: "L'utilisateur n'a pas été trouvé." });
-}
+      return res.status(200).json({ message: "Un e-mail de réinitialisation de mot de passe a été envoyé." });
+    } else {
+      return res.status(400).json({ message: "L'utilisateur n'a pas été trouvé." });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Une erreur s'est produite lors de l'envoi de l'e-mail de réinitialisation." });
@@ -182,6 +182,9 @@ const resetPassword = async (req, res) => {
     }
     if (newPassword !== confirmPassword) {
       return res.status(400).json({ message: "Le mot de passe et la confirmation ne correspondent pas." });
+    }
+    if (newPassword.length < 4) {
+      return res.status(400).json({ message: "Le mot de passe doit comporter au moins 4 caractères." });
     }
     const user = await UserModel.findOne({
       resetToken,

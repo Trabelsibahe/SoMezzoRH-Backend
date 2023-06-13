@@ -17,7 +17,9 @@ module.exports = function ValidatePasswordChange(data) {
     if (validator.isEmpty(data.newPassword)) {
         errors.newPassword = "Veuillez saisir le nouveau mot de passe.";
     }
-
+    if (data.newPassword.length < 4) {
+        errors.newPassword = "Le mot de passe doit comporter au moins 4 caractères.";
+    }
     if (!validator.equals(data.newPassword, data.pConfirm)) {
         errors.pConfirm = "Veuillez verifier le mot de passe.";
     }

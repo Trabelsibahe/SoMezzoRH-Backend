@@ -40,6 +40,9 @@ module.exports = function ValidateRegister(data) {
   if (validator.isEmpty(data.password)) {
     errors.password = "Veuillez entrez un mot de passe.";
   }
+  if (data.password.length < 4) {
+    errors.newPassword = "Le mot de passe doit comporter au moins 4 caractères.";
+}
   if(!validator.equals(data.password, data.confirm)){
     errors.confirm = "Veuillez verifier le mot de passe.";
   }
